@@ -1,4 +1,4 @@
-var stripe = Stripe('pk_test_51HA5gFJMxUSJIePPhyPDoN5vfd7Jt9wHLfgnjzRErkCbhLomqNasb7ld55GRgGGzDmgNJrbPyKUmJMqbRybxEkvl00g0htS87a')
+var stripe = Stripe('')
 
 var app = new Vue({
   el: '#app',
@@ -28,6 +28,10 @@ var app = new Vue({
     stripeTokenHandler: function(token, amount) {
         console.log('hacer cositas y llamar al servidor después de que tenemos el token')
         console.log(token, amount)
+        axios.get('https://us-central1-stripepayments-6c5b8.cloudfunctions.net/helloWorld')
+             .then(response => {
+               console.log(response);
+             });
     }
   }
 })
