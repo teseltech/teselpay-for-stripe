@@ -1,20 +1,30 @@
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
+const cors = require('cors')({origin: true});
+const express = require('express');
 
-const stripe = new Stripe('pk_test_51HA5gFJMxUSJIePPhyPDoN5vfd7Jt9wHLfgnjzRErkCbhLomqNasb7ld55GRgGGzDmgNJrbPyKUmJMqbRybxEkvl00g0htS87a', {
+const stripe = new Stripe('', {
   apiVersion: '2020-08-27',
 });
 
-export const helloWorld = functions.https.onRequest(async (request, response) => {
+const app = express();
 
-  const token: string = request.body.stripeToken;
-
+const handler = async (request: any, response: any) => {
+  const tok: string = request.body.token.id;
   const charge = await stripe.charges.create({
-    amount: 999,
+    amount: request.body.amount,
     currency: 'usd',
     description: 'Example charge',
-    source: token,
+    source: tok,
   });
 
   response.send(charge);
-});
+}
+
+app.use(cors);
+app.use(handler);
+app.post('/', (req: any, res: any) => {
+  res.send('hello')
+})
+
+exports.app = functions.https.onRequest(app);

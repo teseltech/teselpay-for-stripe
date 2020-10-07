@@ -17,21 +17,26 @@ var app = new Vue({
   methods: {
     createToken: function() {
       stripe.createToken(this.card)
-            .then((result) => {
-              if(result.error) {
-                console.log('error')
-              } else {
-                this.stripeTokenHandler(result.token, this.amount)
-              }
-            })
+      .then((result) => {
+        if(result.error) {
+          console.log('error')
+        } else {
+          this.stripeTokenHandler(result.token, this.amount)
+        }
+      })
     },
     stripeTokenHandler: function(token, amount) {
-        console.log('hacer cositas y llamar al servidor después de que tenemos el token')
-        console.log(token, amount)
-        axios.get('https://us-central1-stripepayments-6c5b8.cloudfunctions.net/helloWorld')
-             .then(response => {
-               console.log(response);
-             });
+      console.log('hacer cositas y llamar al servidor después de que tenemos el token')
+      console.log(token, amount * 100)
+      var handlerurl = 'http://localhost:5001/stripepayments-6c5b8/us-central1/app/';
+      axios.post(handlerurl,
+        {
+          token: token,
+          amount: amount * 100
+        })
+        .then(response => {
+          console.log(response);
+        });
+      }
     }
-  }
-})
+  })
