@@ -5,11 +5,29 @@ var app = new Vue({
   data: {
     message: 'Hello Vue!',
     elements: null,
-    card: null
+    card: null,
+    amount: 0.0,
   },
   mounted: function() {
     this.elements = stripe.elements();
     this.card = this.elements.create('card');
     this.card.mount('#data-card')
+
+  },
+  methods: {
+    createToken: function() {
+      stripe.createToken(this.card)
+            .then((result) => {
+              if(result.error) {
+                console.log('error')
+              } else {
+                this.stripeTokenHandler(result.token, this.amount)
+              }
+            })
+    },
+    stripeTokenHandler: function(token, amount) {
+        console.log('hacer cositas y llamar al servidor después de que tenemos el token')
+        console.log(token, amount)
+    }
   }
 })
