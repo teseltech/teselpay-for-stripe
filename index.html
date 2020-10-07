@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+
+  <title>Tesel — Sistema de Pagos</title>
+</head>
+<body>
+
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">Tesel Technology</h1>
+      <p class="lead">Sistema de pagos</p>
+    </div>
+  </div>
+
+  <div id="app" class="container">
+    <div class="row">
+      <div id="left" class="col-8">
+        <div class="form-group">
+          <label for="data-name">Cliente</label>
+          <input id="data-name" class="form-control form-control-sm" placeholder="Tu nombre o el nombre de tu empresa">
+          <small class="form-text text-muted">¿Para qué empresa o persona esta realizando este pago?</small>
+        </div>
+        <div class="form-group">
+          <label for="data-concept">Concepto</label>
+          <input id="data-concept" class="form-control form-control-sm" placeholder="Pago de Google Workspaces para Agosto">
+          <small class="form-text text-muted">¿De qué es este pago?</small>
+        </div>
+        <div class="form-group">
+          <label for="data-email">Email</label>
+          <input id="data-email" class="form-control form-control-sm" placeholder="micorreo@ejemplo.com">
+          <small class="form-text text-muted">Su correo eléctronico para enviar un recibo</small>
+        </div>
+
+        <div class="form-group">
+          <label for="data-card" class="mb-2">Datos de tarjeta</label>
+          <div id="data-card"></div>
+        </div>
+
+
+      </div>
+
+      <div id="right" class="col-4">
+        <div class="form-group">
+          <label for="data-ccv">Monto</label>
+          <input id="data-ccv" class="form-control form-control-sm" placeholder="">
+          <small class="form-text text-muted">El monto que desea pagar a Tesel</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Pagar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="app.js" type="text/javascript"></script>
+</body>
+</html>
