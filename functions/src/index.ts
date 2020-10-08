@@ -14,7 +14,7 @@ const handler = async (request: any, response: any) => {
   const charge = await stripe.charges.create({
     amount: request.body.amount,
     currency: 'usd',
-    description: 'Example charge',
+    description: request.body.description,
     source: tok,
   });
 
