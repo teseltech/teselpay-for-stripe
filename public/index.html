@@ -8,33 +8,36 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
 
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"> 
+
+  <link rel="icon" href="https://i0.wp.com/tesel.mx/wp-content/uploads/2017/05/cropped-favicon-167x167.png?fit=32%2C32&amp;ssl=1" sizes="32x32">
   <title>Tesel — Sistema de Pagos</title>
 </head>
 <body>
 
-  <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-      <h1 class="display-4">Tesel Technology</h1>
+  <div class="payments-header py-2 mb-3">
+    <div class="container text-right">
+      <img src="TESEL_isologo.svg" alt="Tesel Technology">
       <p class="lead">Sistema de pagos</p>
     </div>
   </div>
 
   <div id="app" class="container">
-    <div class="row">
-      <div id="left" class="col-8">
+    <div class="row mx-2">
+      <div id="left" class="col-sm-8">
         <div class="form-group">
           <label for="data-name">Cliente</label>
-          <input id="data-name" class="form-control form-control-sm" placeholder="Tu nombre o el nombre de tu empresa">
+          <input id="data-name" @focus="$event.target.select()" class="form-control form-control-sm" placeholder="Tu nombre o el nombre de tu empresa">
           <small class="form-text text-muted">¿Para qué empresa o persona esta realizando este pago?</small>
         </div>
         <div class="form-group">
           <label for="data-concept">Concepto</label>
-          <input id="data-concept" v-model="description" class="form-control form-control-sm" placeholder="Pago de Google Workspaces para Agosto">
+          <input id="data-concept" v-model="description" @focus="$event.target.select()" class="form-control form-control-sm" placeholder="Pago de Google Workspaces para Agosto">
           <small class="form-text text-muted">¿De qué es este pago?</small>
         </div>
         <div class="form-group">
           <label for="data-email">Email</label>
-          <input id="data-email" class="form-control form-control-sm" placeholder="micorreo@ejemplo.com">
+          <input id="data-email" @focus="$event.target.select()" class="form-control form-control-sm" placeholder="micorreo@ejemplo.com">
           <small class="form-text text-muted">Su correo eléctronico para enviar un recibo</small>
         </div>
 
@@ -48,7 +51,18 @@
       <div id="right" class="col-sm-4">
         <div class="form-group">
           <label for="data-ccv">Monto</label>
-          <input id="data-ccv" v-model="amount" class="form-control form-control-sm" placeholder="">
+          <!-- <input id="data-ccv" v-model="amount" @focus="$event.target.select()" class="form-control form-control-sm" placeholder=""> -->
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">USD $</span>
+            </div>
+            <input type="text" v-model="amount" @focus="$event.target.select()" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <div class="input-group-append">
+              <span class="input-group-text">.00</span>
+            </div>
+          </div>
+
           <small class="form-text text-muted">El monto que desea pagar a Tesel</small>
         </div>
         <button type="submit" class="btn btn-primary" v-on:click="createToken">Pagar</button>

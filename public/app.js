@@ -1,4 +1,4 @@
-var stripe = Stripe('');
+var stripe = Stripe('pk_test_51HA5gFJMxUSJIePPhyPDoN5vfd7Jt9wHLfgnjzRErkCbhLomqNasb7ld55GRgGGzDmgNJrbPyKUmJMqbRybxEkvl00g0htS87a');
 
 var app = new Vue({
   el: '#app',
