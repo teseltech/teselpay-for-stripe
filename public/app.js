@@ -1,4 +1,4 @@
-var stripe = Stripe('')
+var stripe = Stripe('');
 
 var app = new Vue({
   el: '#app',

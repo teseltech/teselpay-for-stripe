@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 const cors = require('cors')({origin: true});
 const express = require('express');
 
-const stripe = new Stripe('', {
+const stripe = new Stripe(functions.config().stripe.secret, {
   apiVersion: '2020-08-27',
 });
 
