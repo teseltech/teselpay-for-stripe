@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 
   <link rel="icon" href="https://i0.wp.com/tesel.mx/wp-content/uploads/2017/05/cropped-favicon-167x167.png?fit=32%2C32&amp;ssl=1" sizes="32x32">
   <title>Tesel — Sistema de Pagos</title>
@@ -51,9 +51,7 @@
       <div id="right" class="col-sm-4">
         <div class="form-group">
           <label for="data-ccv">Monto</label>
-          <!-- <input id="data-ccv" v-model="amount" @focus="$event.target.select()" class="form-control form-control-sm" placeholder=""> -->
-
-          <div class="input-group mb-3">
+          <div class="input-group mb-3 input-group-lg">
             <div class="input-group-prepend">
               <span class="input-group-text">USD $</span>
             </div>
@@ -62,10 +60,9 @@
               <span class="input-group-text">.00</span>
             </div>
           </div>
-
           <small class="form-text text-muted">El monto que desea pagar a Tesel</small>
         </div>
-        <button type="submit" class="btn btn-primary" v-on:click="createToken">Pagar</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" v-on:click="createToken">Pagar</button>
           <div id="data-button"></div>
       </div>
     </div>
