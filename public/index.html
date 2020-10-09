@@ -22,10 +22,11 @@
     </div>
   </header>
 
-  <div id="app" class="container">
+  <div class="container">
+  <form id="app" @submit="createToken" action="/" method="post">
     <div class="row mx-2">
       <div id="left" class="col-sm-8">
-        
+
         <section>
           <h2>Información</h2>
           <fieldset class="with-state">
@@ -73,11 +74,18 @@
               </div>
             </label>
           </fieldset>
+          <div class="p-3 mb-2 bg-danger text-center text-white rounded" v-bind:class="{ 'd-none': !errorMessage }">
+            {{ errorMessage }}
+          </div>
+          <div class="p-3 mb-2 bg-success text-center text-white rounded" v-bind:class="{ 'd-none': !successMessage }">
+            {{ successMessage }}
+          </div>
         </section>
         <button type="submit" class="payment-button" v-on:click="createToken">Pagar</button>
         <div id="data-button"></div>
       </div>
     </div>
+  </form>
   </div>
 
   <script src="https://js.stripe.com/v3/"></script>

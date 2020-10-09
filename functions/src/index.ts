@@ -16,8 +16,14 @@ const handler = async (request: any, response: any) => {
     currency: 'usd',
     description: request.body.description,
     source: tok,
+  })
+  .catch(result => {
+    return result;
+  })
+  .then(result => {
+    return result;
   });
-
+  console.info(charge)
   response.send(charge);
 }
 
