@@ -12,38 +12,11 @@
 
 
 body {
-  /* display: flex;
-  flex-direction: row;
-  align-items: center; */
   background: #f8fbfd;
 }
 
 
 /* Stripe UI style */
-/* 
-input,
-.StripeElement {
-  height: 40px;
-  padding: 10px 12px;
-
-  color: #32325d;
-  background-color: white;
-  border: 1px solid transparent;
-  border-radius: 4px;
-
-  box-shadow: 0 1px 3px 0 #e6ebf1;
-  -webkit-transition: box-shadow 150ms ease;
-  transition: box-shadow 150ms ease;
-}
-
-input {
-  padding: 10px 12px;
-}
-
-input:focus,
-.StripeElement--focus {
-  box-shadow: 0 1px 3px 0 #cfd7df;
-} */
 
 .StripeElement--invalid {
   border-color: #fa755a;
@@ -231,7 +204,7 @@ span#generate:hover {
   color: #aab7c4;
 }
 
-fieldset .select::after {
+fieldset .select::after, fieldset #currency::after {
   content: '';
   position: absolute;
   width: 9px;
@@ -264,7 +237,7 @@ select {
 }
 
 select:focus {
-  color: #666ee8;
+  color: #037690;
 }
 
 ::-webkit-input-placeholder {
@@ -280,7 +253,7 @@ select:focus {
 
 input:-webkit-autofill,
 select:-webkit-autofill {
-  -webkit-text-fill-color: #666ee8;
+  -webkit-text-fill-color: #037690;
   transition: background-color 100000000s;
   -webkit-animation: 1ms void-animation-out 1s;
 }
@@ -293,7 +266,6 @@ select:-webkit-autofill {
 
 button.payment-button {
   display: block;
-  /* background: #666ee8; */
   background: #00b2c4;
   color: #fff;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -308,7 +280,6 @@ button.payment-button {
 }
 
 button.payment-button:focus {
-  /* background: #555abf; */
   background: #7fc7d5;
 }
 
@@ -319,6 +290,55 @@ button.payment-button:hover {
 }
 
 button.payment-button:active {
-  /* background: #43458b; */
   background: #037690;
+}
+
+/* Amount */
+
+fieldset label.amount {
+  display: inline-flex;
+  width: 68%;
+  border-bottom: none;
+}
+
+fieldset label.amount input {
+  font-size: 30px;
+  overflow: hidden;
+}
+
+/* Currency */
+
+#currency {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+#currency select {
+  margin: 0 -15px 0 -30px;
+  padding: 0 15px 0 30px;
+}
+
+#currency::before {
+  display: inline-flex;
+  content: '';
+  width: 21px;
+  height: 15px;
+  background: url(/images/flags.svg);
+  background-position: -1000px -1000px;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+}
+
+#currency.usd::before {
+  background-position: -10px -185px;
+}
+
+#currency.mxn::before {
+  background-position: -289px -110px;
+}
+
+fieldset label.currency {
+  width: 32%;
+  display: inline-flex;
 }
