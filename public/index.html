@@ -15,17 +15,48 @@
 </head>
 <body>
 
-  <div class="payments-header py-2 mb-3">
-    <div class="container text-right">
-      <img src="TESEL_isologo.svg" alt="Tesel Technology">
-      <p class="lead">Sistema de pagos</p>
+  <header>
+    <div class="container text-center">
+      <img src="TESEL_isologo.svg" alt="Tesel Tech">
+      <h1 class="subtitle">Sistema de pagos</h1>
     </div>
-  </div>
+  </header>
 
   <div id="app" class="container">
     <div class="row mx-2">
       <div id="left" class="col-sm-8">
-        <div class="form-group">
+        
+        <section>
+          <h2>Información</h2>
+          <fieldset class="with-state">
+            <label for="data-name">
+              <span>Cliente</span>
+              <input name="name" class="field" placeholder="Tu nombre o el nombre de tu empresa" id="data-name" @focus="$event.target.select()" required>
+            </label>
+            <label for="data-email">
+              <span>Email</span>
+              <input name="email" type="email" class="field" placeholder="micorreo@ejemplo.com" id="data-email" @focus="$event.target.select()" required>
+            </label>
+            <label for="data-concept">
+              <span>Concepto</span>
+              <input name="concept" class="field" placeholder="¿De qué es este pago?" id="data-concept" v-model="description" @focus="$event.target.select()" required>
+            </label>
+        </fieldset>
+        </section>
+
+        <section>
+          <h2>Método de pago</h2>
+          <div class="form-group">
+            <fieldset>
+              <label for="data-card">
+                <span>Tarjeta</span>
+                <div id="data-card" class="field"></div>
+              </label>
+            </fieldset>
+          </div>
+        </section>
+
+        <!-- <div class="form-group">
           <label for="data-name">Cliente</label>
           <input id="data-name" @focus="$event.target.select()" class="form-control form-control-sm" placeholder="Tu nombre o el nombre de tu empresa">
           <small class="form-text text-muted">¿Para qué empresa o persona esta realizando este pago?</small>
@@ -44,12 +75,24 @@
         <div class="form-group">
           <label for="data-card" class="mb-2">Datos de tarjeta</label>
           <div id="data-card"></div>
-        </div>
+        </div> -->
 
       </div>
 
       <div id="right" class="col-sm-4">
-        <div class="form-group">
+        <section>
+          <h2>Monto</h2>
+          <fieldset>
+            <label for="data-ccv">
+              <!-- <span>Monto</span> -->
+              <input type="text" name="amount" aria-label="Amount (to the nearest dollar)" class="field" id="data-amount" v-model="amount" @focus="$event.target.select()" required>
+            </label>
+          </fieldset>
+        </section>
+        <button type="submit" class="payment-button" v-on:click="createToken">Pagar</button>
+        <div id="data-button"></div>
+
+        <!-- <div class="form-group">
           <label for="data-ccv">Monto</label>
           <div class="input-group mb-3 input-group-lg">
             <div class="input-group-prepend">
@@ -63,7 +106,7 @@
           <small class="form-text text-muted">El monto que desea pagar a Tesel</small>
         </div>
         <button type="submit" class="btn btn-primary btn-lg btn-block" v-on:click="createToken">Pagar</button>
-          <div id="data-button"></div>
+          <div id="data-button"></div> -->
       </div>
     </div>
   </div>
