@@ -9,7 +9,8 @@ var app = new Vue({
     amount: null,
     description: '',
     errorMessage: '',
-    successMessage: ''
+    successMessage: '',
+    currency: 'usd'
   },
   mounted: function() {
     this.elements = stripe.elements();
@@ -31,11 +32,11 @@ var app = new Vue({
         } else {
           this.errorMessage = '';
           this.successMessage = '';
-          this.stripeTokenHandler(result.token, this.amount, this.description);
+          this.stripeTokenHandler(result.token, this.amount, this.currency, this.description);
         }
       })
     },
-    stripeTokenHandler: function(token, amount, description) {
+    stripeTokenHandler: function(token, amount, currency, description) {
       console.info('Will attempt to authorize the payment')
       // var handlerurl = 'https://us-central1-stripepayments-6c5b8.cloudfunctions.net/app';
       var handlerurl = 'http://localhost:5001/stripepayments-6c5b8/us-central1/app/';
@@ -43,6 +44,7 @@ var app = new Vue({
         {
           token: token,
           amount: amount * 100,
+          currency: currency,
           description: description
         })
         .then(response => {

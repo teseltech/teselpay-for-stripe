@@ -10,6 +10,12 @@
   -webkit-text-size-adjust: none;
 }
 
+[v-cloak] > * {
+  display: none;
+}
+[v-cloak]::before {
+  content: "Cargando...";
+}
 
 body {
   background: #f8fbfd;
@@ -33,7 +39,7 @@ body {
   padding: 30px 0;
 }
 
-/* Header */ 
+/* Header */
 
 header {
   background-color: #fff;

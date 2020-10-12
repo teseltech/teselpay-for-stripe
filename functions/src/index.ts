@@ -13,7 +13,7 @@ const handler = async (request: any, response: any) => {
   const tok: string = request.body.token.id;
   const charge = await stripe.charges.create({
     amount: request.body.amount,
-    currency: 'usd',
+    currency: request.body.currency,
     description: request.body.description,
     source: tok,
   })

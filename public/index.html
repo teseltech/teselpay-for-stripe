@@ -23,7 +23,7 @@
   </header>
 
   <div class="container">
-  <form id="app" @submit="createToken" action="/" method="post">
+  <form id="app" @submit="createToken" action="/" method="post" v-cloak>
     <div class="row mx-2">
       <div id="left" class="col-sm-8">
 
@@ -67,9 +67,9 @@
             </label>
             <label for="data-currency" class="currency">
               <div id="currency" class="field usd">
-                <select name="currency">
-                  <option value="USD" selected="selected">USD</option>
-                  <option value="MXN">MXN</option>
+                <select name="currency" v-model="currency">
+                  <option value="usd" selected="selected">USD</option>
+                  <option value="mxn">MXN</option>
                 </select>
               </div>
             </label>
