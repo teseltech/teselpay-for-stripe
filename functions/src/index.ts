@@ -15,6 +15,7 @@ const handler = async (request: any, response: any) => {
     amount: request.body.amount,
     currency: request.body.currency,
     description: request.body.description,
+    receipt_email: request.body.email,
     source: tok,
   })
   .catch(result => {

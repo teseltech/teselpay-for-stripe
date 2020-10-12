@@ -10,6 +10,7 @@ var app = new Vue({
     description: '',
     errorMessage: '',
     successMessage: '',
+    email: null,
     currency: 'usd'
   },
   mounted: function() {
@@ -32,11 +33,11 @@ var app = new Vue({
         } else {
           this.errorMessage = '';
           this.successMessage = '';
-          this.stripeTokenHandler(result.token, this.amount, this.currency, this.description);
+          this.stripeTokenHandler(result.token, this.amount, this.currency, this.description, this.email);
         }
       })
     },
-    stripeTokenHandler: function(token, amount, currency, description) {
+    stripeTokenHandler: function(token, amount, currency, description, email) {
       console.info('Will attempt to authorize the payment')
       // var handlerurl = 'https://us-central1-stripepayments-6c5b8.cloudfunctions.net/app';
       var handlerurl = 'http://localhost:5001/stripepayments-6c5b8/us-central1/app/';
@@ -45,7 +46,8 @@ var app = new Vue({
           token: token,
           amount: amount * 100,
           currency: currency,
-          description: description
+          description: description,
+          email: email
         })
         .then(response => {
           var data = response.data;
@@ -81,6 +83,15 @@ var app = new Vue({
               }
           }
         });
+      },
+    isNumber: function(e) {
+      e = (e) ? e : window.event;
+      var charCode = (e.which) ? e.which : e.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        e.preventDefault();;
+      } else {
+        return true;
       }
+    }
     }
   })

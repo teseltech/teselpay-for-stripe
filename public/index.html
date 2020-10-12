@@ -36,7 +36,7 @@
             </label>
             <label for="data-email">
               <span>Email</span>
-              <input name="email" type="email" class="field" placeholder="micorreo@ejemplo.com" id="data-email" @focus="$event.target.select()" required>
+              <input name="email" type="email" class="field" v-model="email" placeholder="micorreo@ejemplo.com" id="data-email" @focus="$event.target.select()" required>
             </label>
             <label for="data-concept">
               <span>Concepto</span>
@@ -63,7 +63,7 @@
           <h2>Monto</h2>
           <fieldset>
             <label for="data-amount" class="amount">
-              <input type="text" name="amount" aria-label="Amount" class="field" id="data-amount" v-model="amount" @focus="$event.target.select()" placeholder="0.00" required>
+              <input type="number" v-model="amount" v-on:focus="$event.target.select()" v-on:keypress="isNumber($event)" name="amount" aria-label="Amount" class="field" id="data-amount" placeholder="0.00" required>
             </label>
             <label for="data-currency" class="currency">
               <div id="currency" class="field usd">
