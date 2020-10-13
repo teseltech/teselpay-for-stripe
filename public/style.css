@@ -1,7 +1,362 @@
-.payments-header {
-  background-color: #e9ecef;
+* {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  line-height: 1.4em;
+  color: #525f7f;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: none;
 }
 
-* {
-  font-family: 'Inter', sans-serif;
+[v-cloak] > * {
+  display: none;
+}
+[v-cloak]::before {
+  content: "Cargando...";
+}
+
+body {
+  background: #f8fbfd;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+/* Stripe UI style */
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+
+/* Contenedor principal */
+
+#app {
+  padding: 30px 0;
+}
+
+/* Header */
+
+header {
+  background-color: #fff;
+  border-bottom: 1px solid #f3f3ff;
+  padding: 20px 0;
+}
+
+header h1.subtitle {
+  font-weight: 300;
+  margin-top: 15px;
+  font-size: 1.25rem;
+  margin-bottom: 0;
+}
+
+/* Checkout */
+
+
+#left {
+  max-width: 480px;
+  margin: 0 auto;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear 0.5s;
+}
+
+#app #left {
+  visibility: visible;
+  opacity: 1;
+}
+
+#right {
+  max-width: 480px;
+  margin: 0 auto;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear 0.5s;
+}
+
+#app #right {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
+section {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-align: left;
+}
+
+h1 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+h2 {
+  margin: 15px 0;
+  color: #32325d;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+
+fieldset {
+  margin-bottom: 20px;
+  background: #fff;
+  box-shadow: 0 1px 3px 0 rgba(50, 50, 93, 0.15),
+    0 4px 6px 0 rgba(112, 157, 199, 0.15);
+  border-radius: 4px;
+  border: none;
+  font-size: 0;
+}
+
+fieldset label {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 42px;
+  padding: 10px 0;
+  align-items: center;
+  justify-content: center;
+  color: #8898aa;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+fieldset label:not(:last-child) {
+  border-bottom: 1px solid #f0f5fa;
+}
+
+fieldset label.state {
+  display: inline-flex;
+  width: 75%;
+}
+
+fieldset:not(.with-state) label.state {
+  display: none;
+}
+
+fieldset label.zip {
+  display: inline-flex;
+  width: 25%;
+  padding-right: 60px;
+}
+
+fieldset:not(.with-state) label.zip {
+  width: 100%;
+}
+
+fieldset label span {
+  min-width: 125px;
+  padding: 0 15px;
+  text-align: right;
+}
+
+fieldset .redirect label span {
+  width: 100%;
+  text-align: center;
+}
+
+p.instruction {
+  display: inline-table;
+  margin-top: -32px;
+  padding: 0 5px;
+  text-align: center;
+  background: #f8fbfd;
+}
+
+p.tip {
+  margin: -10px auto 10px;
+  padding: 5px 0 5px 30px;
+  font-size: 14px;
+  background: url(/images/tip.svg) left center no-repeat;
+}
+
+span#generate {
+  cursor: pointer;
+  color: #525f7f;
+  text-decoration: underline;
+}
+span#generate:hover {
+  text-decoration: none;
+}
+
+.field {
+  flex: 1;
+  padding: 0 15px;
+  background: transparent;
+  font-weight: 400;
+  color: #31325f;
+  outline: none;
+  cursor: text;
+}
+
+.field::-webkit-input-placeholder {
+  color: #aab7c4;
+}
+.field::-moz-placeholder {
+  color: #aab7c4;
+}
+.field:-ms-input-placeholder {
+  color: #aab7c4;
+}
+
+fieldset .select::after, fieldset #currency::after {
+  content: '';
+  position: absolute;
+  width: 9px;
+  height: 5px;
+  right: 20px;
+  top: 50%;
+  margin-top: -2px;
+  background-image: url(/images/dropdown.svg);
+  pointer-events: none;
+}
+
+input {
+  flex: 1;
+  border-style: none;
+  outline: none;
+  color: #313b3f;
+}
+
+select {
+  flex: 1;
+  border-style: none;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  color: #313b3f;
+  cursor: pointer;
+  background: transparent;
+}
+
+select:focus {
+  color: #037690;
+}
+
+::-webkit-input-placeholder {
+  color: #cfd7e0;
+}
+::-moz-placeholder {
+  color: #cfd7e0;
+  opacity: 1;
+}
+:-ms-input-placeholder {
+  color: #cfd7e0;
+}
+
+input:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #037690;
+  transition: background-color 100000000s;
+  -webkit-animation: 1ms void-animation-out 1s;
+}
+
+
+/* #data-card {
+  margin-top: -1px;
+} */
+
+
+button.payment-button {
+  display: block;
+  background: #00b2c4;
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  border: 0;
+  font-weight: 700;
+  width: 100%;
+  height: 40px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+button.payment-button:focus {
+  background: #7fc7d5;
+}
+
+button.payment-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px 0 rgba(50, 50, 93, 0.1),
+    0 3px 6px 0 rgba(0, 0, 0, 0.08);
+}
+
+button.payment-button:active {
+  background: #037690;
+}
+
+/* Amount */
+
+fieldset label.amount {
+  display: inline-flex;
+  width: 68%;
+  border-bottom: none;
+}
+
+fieldset label.amount input {
+  font-size: 30px;
+  overflow: hidden;
+}
+
+/* Currency */
+
+#currency {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+#currency select {
+  margin: 0 -15px 0 -30px;
+  padding: 0 15px 0 30px;
+}
+
+#currency::before {
+  display: inline-flex;
+  content: '';
+  width: 21px;
+  height: 15px;
+  background: url(/images/flags.svg);
+  background-position: -1000px -1000px;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+}
+
+#currency.usd::before {
+  background-position: -10px -185px;
+}
+
+#currency.mxn::before {
+  background-position: -289px -110px;
+}
+
+fieldset label.currency {
+  width: 32%;
+  display: inline-flex;
 }
