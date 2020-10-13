@@ -32,15 +32,15 @@
           <fieldset class="with-state">
             <label for="data-name">
               <span>Cliente</span>
-              <input name="name" class="field" placeholder="Nombre o empresa" id="data-name" @focus="$event.target.select()" required>
+              <input name="name" type="text" id="data-name" v-model="description" @focus="$event.target.select()" class="field" placeholder="Nombre o empresa" required>
             </label>
             <label for="data-email">
               <span>Email</span>
-              <input name="email" type="email" class="field" v-model="email" placeholder="micorreo@ejemplo.com" id="data-email" @focus="$event.target.select()" required>
+              <input name="email" type="email" id="data-email" v-model="email" @focus="$event.target.select()" class="field" placeholder="micorreo@ejemplo.com" required>
             </label>
             <label for="data-concept">
               <span>Concepto</span>
-              <input name="concept" class="field" placeholder="¿De qué es este pago?" id="data-concept" v-model="description" @focus="$event.target.select()" required>
+              <input name="concept" type="text" id="data-concept" class="field" placeholder="¿De qué es este pago?" required>
             </label>
         </fieldset>
         </section>
@@ -63,10 +63,10 @@
           <h2>Monto</h2>
           <fieldset>
             <label for="data-amount" class="amount">
-              <input type="number" v-model="amount" v-on:focus="$event.target.select()" v-on:keypress="isNumber($event)" name="amount" aria-label="Amount" class="field" id="data-amount" placeholder="0.00" required>
+              <input name="amount" type="number" id="data-amount" v-model="amount" @focus="$event.target.select()" @keypress="isNumber($event)" class="field" placeholder="0.00" required>
             </label>
             <label for="data-currency" class="currency">
-              <div id="currency" class="field usd">
+              <div id="currency" class="field" v-bind:class="[currency == 'usd' ? 'usd' : 'mxn' ]">
                 <select name="currency" v-model="currency">
                   <option value="usd" selected="selected">USD</option>
                   <option value="mxn">MXN</option>
@@ -81,7 +81,7 @@
             {{ successMessage }}
           </div>
         </section>
-        <button type="submit" class="payment-button" v-on:click="createToken">Pagar</button>
+        <button type="submit" @click="createToken" class="payment-button">Pagar</button>
         <div id="data-button"></div>
       </div>
     </div>
@@ -92,24 +92,5 @@
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="app.js" type="text/javascript"></script>
-  <script type="text/javascript">
-  const currency = document.getElementById('currency');
-  currency
-    .querySelector('select[name=currency]')
-    .addEventListener('change', (event) => {
-      event.preventDefault();
-      selectCurrency(event.target.value);
-    });
-
-  const selectCurrency = (currency) => {
-    const selector = document.getElementById('currency');
-    selector.querySelector(`option[value=${currency}]`).selected = 'selected';
-    selector.className = `field ${currency.toLowerCase()}`;
-
-    // Trigger the methods to show relevant fields and payment methods on page load.
-    //showRelevantFormFields();
-    //showRelevantPaymentMethods();
-  };
-  </script>
 </body>
 </html>

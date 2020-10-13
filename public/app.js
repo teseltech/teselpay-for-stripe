@@ -25,18 +25,23 @@ var app = new Vue({
   methods: {
     createToken: function(e) {
       e.preventDefault();
-      stripe.createToken(this.card)
-      .then((result) => {
-        if(result.error) {
-          console.error(result.error);
-          this.errorMessage = result.error.message;
-        } else {
-          this.errorMessage = '';
-          this.successMessage = '';
-          this.stripeTokenHandler(result.token, this.amount, this.currency, this.description, this.email);
-        }
-      })
+      if(this.description && this.email && this.amount) {
+        stripe.createToken(this.card)
+        .then((result) => {
+          if(result.error) {
+            console.error(result.error);
+            this.errorMessage = result.error.message;
+          } else {
+            this.errorMessage = '';
+            this.successMessage = '';
+            this.stripeTokenHandler(result.token, this.amount, this.currency, this.description, this.email);
+          }
+        });
+      } else {
+        this.errorMessage = 'Uno de los campos esta incompleto'
+      }
     },
+
     stripeTokenHandler: function(token, amount, currency, description, email) {
       console.info('Will attempt to authorize the payment')
       // var handlerurl = 'https://us-central1-stripepayments-6c5b8.cloudfunctions.net/app';
@@ -74,24 +79,25 @@ var app = new Vue({
             break;
 
             default:
-              if(data.outcome.type == 'authorized') {
-                this.successMessage = '¡Muchas gracias por tu pago!'
-                this.card.clear();
-                this.amount = 0.0;
-              } else {
-                this.errorMessage = 'Ocurrió un error desconocido. Contactanos.'
-              }
+            if(data.outcome.type == 'authorized') {
+              this.successMessage = '¡Muchas gracias por tu pago!'
+              this.card.clear();
+              this.amount = 0.0;
+            } else {
+              this.errorMessage = 'Ocurrió un error desconocido. Contactanos.'
+            }
           }
         });
       },
-    isNumber: function(e) {
-      e = (e) ? e : window.event;
-      var charCode = (e.which) ? e.which : e.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-        e.preventDefault();;
-      } else {
-        return true;
-      }
-    }
+
+      isNumber: function(e) {
+        e = (e) ? e : window.event;
+        var charCode = (e.which) ? e.which : e.keyCode;
+        if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+          e.preventDefault();;
+        } else {
+          return true;
+        }
+      },
     }
   })
