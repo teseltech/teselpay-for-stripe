@@ -1,7 +1,7 @@
 var stripe = Stripe('pk_test_51HA5gFJMxUSJIePPhyPDoN5vfd7Jt9wHLfgnjzRErkCbhLomqNasb7ld55GRgGGzDmgNJrbPyKUmJMqbRybxEkvl00g0htS87a',  { locale: 'es-419'});
 
 const router = new VueRouter({
- mode: 'history',
+  mode: 'history',
   routes: [
     { path: '/:currency/:amount' },
     { path: '/:currency/:amount' }
@@ -10,12 +10,12 @@ const router = new VueRouter({
 
 router.beforeResolve((to, from, next) => {
 
-  if(to.params.currency == 'mxn' || to.params.currency == 'usd') {
-    if(!isNaN(parseFloat(to.params.amount))){
-      next()
-    }
+  if(to.path == '/'){
+    next()
+  } else if((to.params.currency == 'mxn' || to.params.currency == 'usd') && (!isNaN(parseFloat(to.params.amount)))) {
+    next()
   } else {
-    next({ path: '/usd/100', replace: false })
+    next({ path: '/', replace: false })
   }
 });
 
@@ -29,7 +29,6 @@ var app = new Vue({
     }
   },
   data: {
-    message: 'Hello Vue!',
     elements: null,
     card: null,
     amount: null,
@@ -41,8 +40,8 @@ var app = new Vue({
   },
   mounted: function() {
 
-    this.currency = this.$route.params.currency;
-    this.amount = this.$route.params.amount;
+    this.currency = this.$route.params.currency || 'usd';
+    this.amount = this.$route.params.amount || 0.0;
 
     this.elements = stripe.elements();
     var style = {
@@ -115,17 +114,16 @@ var app = new Vue({
             this.errorMessage = 'Ocurrió un error desconocido. Por favor contáctanos.'
           }
         }
+      });
+    },
+    isNumber: function(e) {
+      e = (e) ? e : window.event;
+      var charCode = (e.which) ? e.which : e.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        e.preventDefault();;
+      } else {
+        return true;
       }
-    });
-  },
-  isNumber: function(e) {
-    e = (e) ? e : window.event;
-    var charCode = (e.which) ? e.which : e.keyCode;
-    if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-      e.preventDefault();;
-    } else {
-      return true;
-    }
-  },
-}
+    },
+  }
 });
