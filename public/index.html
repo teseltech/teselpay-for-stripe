@@ -63,7 +63,7 @@
           <h2>Monto</h2>
           <fieldset>
             <label for="data-amount" class="amount">
-              <input name="amount" type="number" id="data-amount" v-model="amount" @focus="$event.target.select()" @keypress="isNumber($event)" class="field" placeholder="0.00" required>
+              <currency-input name="amount" v-model="amount" @focus="$event.target.select()" currency="USD" locale="en" valueAsInteger="false" allowNegative="false"/>
             </label>
             <label for="data-currency" class="currency">
               <div id="currency" class="field" v-bind:class="[currency == 'usd' ? 'usd' : 'mxn' ]">
@@ -93,6 +93,7 @@
   <script src="https://js.stripe.com/v3/"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script src="https://unpkg.com/vue-currency-input"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="/app.js" type="text/javascript"></script>
 </body>

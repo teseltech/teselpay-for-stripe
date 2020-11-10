@@ -31,7 +31,7 @@ var app = new Vue({
   data: {
     elements: null,
     card: null,
-    amount: null,
+    amount: '0.0',
     description: '',
     errorMessage: '',
     successMessage: '',
@@ -41,7 +41,7 @@ var app = new Vue({
   mounted: function() {
 
     this.currency = this.$route.params.currency || 'usd';
-    this.amount = this.$route.params.amount || 0.0;
+    this.amount = this.$route.params.amount || '0.0';
 
     this.elements = stripe.elements();
     var style = {
@@ -72,6 +72,7 @@ var app = new Vue({
     },
 
     stripeTokenHandler: function(token, amount, currency, description, email) {
+
       console.info('Will attempt to authorize the payment')
       // var handlerurl = 'https://us-central1-stripepayments-6c5b8.cloudfunctions.net/app';
       var handlerurl = 'http://localhost:5001/stripepayments-6c5b8/us-central1/app/';
@@ -109,21 +110,12 @@ var app = new Vue({
           if(data.outcome.type == 'authorized') {
             this.successMessage = '¡Muchas gracias, recibimos tu pago!'
             this.card.clear();
-            this.amount = 0.0;
+            this.amount = '0.0';
           } else {
             this.errorMessage = 'Ocurrió un error desconocido. Por favor contáctanos.'
           }
         }
       });
-    },
-    isNumber: function(e) {
-      e = (e) ? e : window.event;
-      var charCode = (e.which) ? e.which : e.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-        e.preventDefault();;
-      } else {
-        return true;
-      }
-    },
+    }
   }
 });
