@@ -1,10 +1,22 @@
 var stripe = Stripe('pk_test_51HA5gFJMxUSJIePPhyPDoN5vfd7Jt9wHLfgnjzRErkCbhLomqNasb7ld55GRgGGzDmgNJrbPyKUmJMqbRybxEkvl00g0htS87a',  { locale: 'es-419'});
 
 const router = new VueRouter({
+ mode: 'history',
   routes: [
     { path: '/:currency/:amount' },
     { path: '/:currency/:amount' }
   ]
+});
+
+router.beforeResolve((to, from, next) => {
+
+  if(to.params.currency == 'mxn' || to.params.currency == 'usd') {
+    if(!isNaN(parseFloat(to.params.amount))){
+      next()
+    }
+  } else {
+    next({ path: '/usd/100', replace: false })
+  }
 });
 
 var app = new Vue({
@@ -14,7 +26,6 @@ var app = new Vue({
     $route(to, from){
       this.currency = to.params.currency;
       this.amount = to.params.amount;
-      console.log(this.currency, this.amount)
     }
   },
   data: {
