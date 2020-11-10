@@ -168,7 +168,7 @@ fieldset:not(.with-state) label.zip {
 }
 
 fieldset label span {
-  min-width: 125px;
+  min-width: 120px;
   padding: 0 15px;
   text-align: right;
 }
@@ -227,7 +227,7 @@ fieldset .select::after, fieldset #currency::after {
   position: absolute;
   width: 9px;
   height: 5px;
-  right: 20px;
+  right: 14px;
   top: 50%;
   margin-top: -2px;
   background-image: url(/images/dropdown.svg);
@@ -359,4 +359,42 @@ fieldset label.amount input {
 fieldset label.currency {
   width: 32%;
   display: inline-flex;
+}
+
+/* Error messages */
+
+.messages {
+  display: flex;
+  justify-content: center;
+}
+
+.element-message {
+  display: inline-flex;
+  height: 20px;
+  margin: 15px auto 0;
+  padding-left: 20px;
+  /* opacity: 0; */
+  transform: translateY(10px);
+  transition-property: opacity, transform;
+  transition-duration: 0.35s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.element-errors.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.element-errors {
+  color: #e25950;
+  background: url(/images/error.svg) center left no-repeat;
+  background-size: 15px 15px;
+  background-position-y: 3px;
+}
+
+.element-success {
+  color: #28a745;
+  background: url(/images/success.svg) center left no-repeat;
+  background-size: 15px 15px;
+  background-position-y: 3px;
 }

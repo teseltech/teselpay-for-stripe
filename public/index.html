@@ -74,15 +74,17 @@
               </div>
             </label>
           </fieldset>
-          <div class="p-3 mb-2 bg-danger text-center text-white rounded" v-bind:class="{ 'd-none': !errorMessage }">
-            {{ errorMessage }}
-          </div>
-          <div class="p-3 mb-2 bg-success text-center text-white rounded" v-bind:class="{ 'd-none': !successMessage }">
-            {{ successMessage }}
-          </div>
         </section>
         <button type="submit" @click="createToken" class="payment-button">Pagar</button>
         <div id="data-button"></div>
+        <div class="messages">
+          <div class="element-message element-errors" v-bind:class="{ 'd-none': !errorMessage }">
+            {{ errorMessage }}
+          </div>
+          <div class="element-message element-success" v-bind:class="{ 'd-none': !successMessage }">
+            {{ successMessage }}
+          </div>
+        </div>
       </div>
     </div>
   </form>
