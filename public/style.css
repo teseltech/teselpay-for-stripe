@@ -315,8 +315,9 @@ button.payment-button:active {
 
 fieldset label.amount {
   display: inline-flex;
-  width: 68%;
+  width: 64%;
   border-bottom: none;
+  padding-left: 12px;
 }
 
 fieldset label.amount input {
