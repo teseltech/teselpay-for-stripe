@@ -20,11 +20,15 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/:currency/:amount' },
-    { path: '/:currency/:amount' }
+    { path: '/:currency/:amount' },
+    { path: '/:amountcurrency' }
   ]
 });
 
 router.beforeResolve((to, from, next) => {
+
+  var re = /(\d+\.?\d{0,2})?([A-z]{3})?/;
+  var amountcurrency = to.params.amountcurrency.match(re);
 
   if(to.path == '/'){
     next()
