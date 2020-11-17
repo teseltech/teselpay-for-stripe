@@ -1,4 +1,20 @@
-var stripe = Stripe('pk_test_51HA5gFJMxUSJIePPhyPDoN5vfd7Jt9wHLfgnjzRErkCbhLomqNasb7ld55GRgGGzDmgNJrbPyKUmJMqbRybxEkvl00g0htS87a',  { locale: 'es-419'});
+const config = {
+  stripe: {
+    pk: "",
+    endpoint: "",
+    currencies: [
+      "usd",
+      "mxn"
+    ]
+  },
+  style: {
+    primarycolor: "",
+    secondarycolor: ""
+  }
+}
+
+
+var stripe = Stripe(config.stripe.pk,  { locale: 'es-419'});
 
 const router = new VueRouter({
   mode: 'history',
@@ -12,7 +28,7 @@ router.beforeResolve((to, from, next) => {
 
   if(to.path == '/'){
     next()
-  } else if((to.params.currency == 'mxn' || to.params.currency == 'usd') && (!isNaN(parseFloat(to.params.amount)))) {
+  } else if(this.currencies.includes(to.params.currency) && !isNaN(parseFloat(to.params.amount))) {
     next()
   } else {
     next({ path: '/', replace: false })
@@ -36,11 +52,19 @@ var app = new Vue({
     errorMessage: '',
     successMessage: '',
     email: null,
-    currency: 'usd'
+    currencies: config.stripe.currencies,
+    currency: config.stripe.currencies[0]
+  },
+  filters: {
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.toUpperCase()
+    }
   },
   mounted: function() {
 
-    this.currency = this.$route.params.currency || 'usd';
+    this.currency = this.$route.params.currency || this.currencies[0]
     this.amount = this.$route.params.amount || '0.0';
 
     this.elements = stripe.elements();
@@ -73,16 +97,18 @@ var app = new Vue({
 
     stripeTokenHandler: function(token, amount, currency, description, email) {
 
-      console.info('Will attempt to authorize the payment')
-      // var handlerurl = 'https://us-central1-stripepayments-6c5b8.cloudfunctions.net/app';
-      var handlerurl = 'http://localhost:5001/stripepayments-6c5b8/us-central1/app/';
-      axios.post(handlerurl, {
+      var handlerurl = config.stripe.endpoint;
+      var paymentinfo = {
         token: token,
         amount: amount * 100,
         currency: currency,
         description: description,
         email: email
-      }).then(response => {
+      };
+
+      console.info('Will attempt to authorize the payment', paymentinfo);
+
+      axios.post(handlerurl, paymentinfo).then(response => {
         var data = response.data;
         console.info(data);
         switch(data.code) {
