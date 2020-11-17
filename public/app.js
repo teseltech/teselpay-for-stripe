@@ -19,16 +19,27 @@ var stripe = Stripe(config.stripe.pk,  { locale: 'es-419'});
 const router = new VueRouter({
   mode: 'history',
   routes: [
+    { path: '/:amountcurrency' },
     { path: '/:currency/:amount' },
     { path: '/:currency/:amount' }
   ]
 });
 
-router.beforeResolve((to, from, next) => {
+router.beforeEach((to, from, next) => {
 
   if(to.path == '/'){
     next()
-  } else if(this.currencies.includes(to.params.currency) && !isNaN(parseFloat(to.params.amount))) {
+  } else if (to.params.amountcurrency){
+    var re = /^(\d+)([A-Za-z]{3})$/;
+    var amountcurrency = to.params.amountcurrency.match(re);
+
+    if(amountcurrency && config.stripe.currencies.includes(amountcurrency[2].toLowerCase()) && !isNaN(parseFloat(amountcurrency[1]))) {
+      next()
+    } else {
+      next({ path: '/', replace: false })
+    }
+
+  } else if(config.stripe.currencies.includes(to.params.currency.toLowerCase()) && !isNaN(parseFloat(to.params.amount))) {
     next()
   } else {
     next({ path: '/', replace: false })
@@ -38,12 +49,27 @@ router.beforeResolve((to, from, next) => {
 var app = new Vue({
   el: '#app',
   router: router,
+
+  /* Watch for changes in objects */
+
   watch: {
     $route(to, from){
-      this.currency = to.params.currency;
-      this.amount = to.params.amount;
+      if(to.params.currency && to.params.amount) {
+        this.currency = to.params.currency.toLowerCase();
+        this.amount = to.params.amount;
+
+      } else if(to.params.amountcurrency) {
+        var re = /^(\d+)([A-Za-z]{3})$/;
+        var amountcurrency = to.params.amountcurrency.match(re);
+
+        this.currency = amountcurrency[2].toLowerCase();
+        this.amount = amountcurrency[1];
+      }
     }
   },
+
+  /* Module variables */
+
   data: {
     elements: null,
     card: null,
@@ -55,6 +81,9 @@ var app = new Vue({
     currencies: config.stripe.currencies,
     currency: config.stripe.currencies[0]
   },
+
+  /* Template available Filters */
+
   filters: {
     capitalize: function (value) {
       if (!value) return ''
@@ -62,10 +91,28 @@ var app = new Vue({
       return value.toUpperCase()
     }
   },
+
+  /* Function to run just after the module is mounted */
+
   mounted: function() {
 
-    this.currency = this.$route.params.currency || this.currencies[0]
-    this.amount = this.$route.params.amount || '0.0';
+    if(this.$route.params.currency && this.$route.params.amount){
+      this.currency = this.$route.params.currency.toLowerCase();
+      this.amount = this.$route.params.amount;
+
+    } else if(this.$route.params.amountcurrency) {
+      var re = /^(\d+)([A-Za-z]{3})$/;
+      var amountcurrency = this.$route.params.amountcurrency.match(re);
+
+      this.currency = amountcurrency[2].toLowerCase();
+      this.amount = amountcurrency[1];
+
+      console.log(this.currency, amountcurrency[1], this.amount, amountcurrency[2]);
+
+    } else {
+      this.currency = this.currencies[0];
+      this.amount = '0.0';
+    }
 
     this.elements = stripe.elements();
     var style = {
@@ -75,6 +122,9 @@ var app = new Vue({
     this.card.mount('#data-card')
 
   },
+
+  /* Template and module available Methods */
+
   methods: {
     createToken: function(e) {
       e.preventDefault();
