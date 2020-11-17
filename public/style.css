@@ -1,6 +1,6 @@
 * {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-  Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   font-size: 15px;
   line-height: 1.4em;
   color: #525f7f;
@@ -10,10 +10,11 @@
   -webkit-text-size-adjust: none;
 }
 
-[v-cloak] > * {
+form[v-cloak] > div {
   display: none;
 }
-[v-cloak]::before {
+
+form[v-cloak]::before {
   content: "Cargando...";
 }
 
@@ -33,7 +34,6 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-
 /* Stripe UI style */
 
 .StripeElement--invalid {
@@ -44,10 +44,9 @@ input[type=number] {
   background-color: #fefde5 !important;
 }
 
-
 /* Contenedor principal */
 
-#app {
+.app {
   padding: 30px 0;
 }
 
@@ -59,17 +58,55 @@ header {
   padding: 20px 0;
 }
 
-header h1.subtitle {
-  font-weight: 300;
-  margin-top: 15px;
-  font-size: 1.25rem;
-  margin-bottom: 0;
-}
-
 /* Checkout */
 
+.container {
+  max-width: 960px;
 
-#left {
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+  }
+
+.text-center {
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-left: .5rem;
+  margin-right: .5rem;
+}
+
+.col-left {
+  order: 0;
+  flex-grow: 8;
+  padding-left: 15px;
+  padding-right: 15px;
+  max-width: 480px;
+  margin: 0 auto;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear 0.5s;
+}
+.d-none {
+  display: none !important;
+}
+
+.app .col-left {
+  visibility: visible;
+  opacity: 1;
+}
+
+.col-right {
+  order: 1;
+  flex-grow: 4;
+  padding-left: 15px;
+  padding-right: 15px;
   max-width: 480px;
   margin: 0 auto;
   visibility: hidden;
@@ -77,26 +114,10 @@ header h1.subtitle {
   transition: visibility 0s, opacity 0.5s linear 0.5s;
 }
 
-#app #left {
+.app .col-right {
   visibility: visible;
   opacity: 1;
 }
-
-#right {
-  max-width: 480px;
-  margin: 0 auto;
-  visibility: hidden;
-  opacity: 0;
-  transition: visibility 0s, opacity 0.5s linear 0.5s;
-}
-
-#app #right {
-  visibility: visible;
-  opacity: 1;
-}
-
-
-
 
 section {
   display: flex;
@@ -106,9 +127,10 @@ section {
 }
 
 h1 {
+  font-weight: 300;
+  margin-top: 15px;
+  font-size: 1.25rem;
   margin: 0 0 20px 0;
-  font-size: 20px;
-  font-weight: 500;
 }
 
 h2 {
@@ -119,7 +141,6 @@ h2 {
   font-size: 13px;
   font-weight: 500;
 }
-
 
 fieldset {
   margin-bottom: 20px;
@@ -148,25 +169,6 @@ fieldset label:not(:last-child) {
   border-bottom: 1px solid #f0f5fa;
 }
 
-fieldset label.state {
-  display: inline-flex;
-  width: 75%;
-}
-
-fieldset:not(.with-state) label.state {
-  display: none;
-}
-
-fieldset label.zip {
-  display: inline-flex;
-  width: 25%;
-  padding-right: 60px;
-}
-
-fieldset:not(.with-state) label.zip {
-  width: 100%;
-}
-
 fieldset label span {
   min-width: 120px;
   padding: 0 15px;
@@ -176,30 +178,6 @@ fieldset label span {
 fieldset .redirect label span {
   width: 100%;
   text-align: center;
-}
-
-p.instruction {
-  display: inline-table;
-  margin-top: -32px;
-  padding: 0 5px;
-  text-align: center;
-  background: #f8fbfd;
-}
-
-p.tip {
-  margin: -10px auto 10px;
-  padding: 5px 0 5px 30px;
-  font-size: 14px;
-  background: url(/images/tip.svg) left center no-repeat;
-}
-
-span#generate {
-  cursor: pointer;
-  color: #525f7f;
-  text-decoration: underline;
-}
-span#generate:hover {
-  text-decoration: none;
 }
 
 .field {
@@ -215,14 +193,16 @@ span#generate:hover {
 .field::-webkit-input-placeholder {
   color: #aab7c4;
 }
+
 .field::-moz-placeholder {
   color: #aab7c4;
 }
+
 .field:-ms-input-placeholder {
   color: #aab7c4;
 }
 
-fieldset .select::after, fieldset #currency::after {
+fieldset .select::after, fieldset .currency::after {
   content: '';
   position: absolute;
   width: 9px;
@@ -230,7 +210,7 @@ fieldset .select::after, fieldset #currency::after {
   right: 14px;
   top: 50%;
   margin-top: -2px;
-  background-image: url(/images/dropdown.svg);
+  background-image: url('/images/dropdown.svg');
   pointer-events: none;
 }
 
@@ -248,7 +228,6 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  outline: none;
   color: #313b3f;
   cursor: pointer;
   background: transparent;
@@ -261,10 +240,12 @@ select:focus {
 ::-webkit-input-placeholder {
   color: #cfd7e0;
 }
+
 ::-moz-placeholder {
   color: #cfd7e0;
   opacity: 1;
 }
+
 :-ms-input-placeholder {
   color: #cfd7e0;
 }
@@ -275,12 +256,6 @@ select:-webkit-autofill {
   transition: background-color 100000000s;
   -webkit-animation: 1ms void-animation-out 1s;
 }
-
-
-/* #data-card {
-  margin-top: -1px;
-} */
-
 
 button.payment-button {
   display: block;
@@ -315,8 +290,9 @@ button.payment-button:active {
 
 fieldset label.amount {
   display: inline-flex;
-  width: 68%;
+  width: 64%;
   border-bottom: none;
+  padding-left: 12px;
 }
 
 fieldset label.amount input {
@@ -326,37 +302,37 @@ fieldset label.amount input {
 
 /* Currency */
 
-#currency {
+.currency {
   display: flex;
   align-items: center;
   position: relative;
 }
 
-#currency select {
+.currency select {
   margin: 0 -15px 0 -30px;
   padding: 0 15px 0 30px;
 }
 
-#currency::before {
+.currency::before {
   display: inline-flex;
   content: '';
   width: 21px;
   height: 15px;
-  background: url(/images/flags.svg);
+  background: url('/images/flags.svg');
   background-position: -1000px -1000px;
   background-repeat: no-repeat;
   margin-right: 10px;
 }
 
-#currency.usd::before {
+.usd::before {
   background-position: -10px -185px;
 }
 
-#currency.mxn::before {
+.mxn::before {
   background-position: -289px -110px;
 }
 
-fieldset label.currency {
+fieldset .currency-label {
   width: 32%;
   display: inline-flex;
 }
@@ -373,28 +349,22 @@ fieldset label.currency {
   height: 20px;
   margin: 15px auto 0;
   padding-left: 20px;
-  /* opacity: 0; */
   transform: translateY(10px);
   transition-property: opacity, transform;
   transition-duration: 0.35s;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.element-errors.visible {
-  opacity: 1;
-  transform: none;
-}
-
 .element-errors {
   color: #e25950;
-  background: url(/images/error.svg) center left no-repeat;
+  background: url('/images/error.svg') center left no-repeat;
   background-size: 15px 15px;
   background-position-y: 3px;
 }
 
 .element-success {
   color: #28a745;
-  background: url(/images/success.svg) center left no-repeat;
+  background: url('/images/success.svg') center left no-repeat;
   background-size: 15px 15px;
   background-position-y: 3px;
 }
