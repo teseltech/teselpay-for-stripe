@@ -65,10 +65,9 @@
               <currency-input name="amount" v-model="amount" @focus="$event.target.select()" currency="USD" locale="en" valueAsInteger="false" allowNegative="false"/>
             </label>
             <label for="data-currency" class="currency-label">
-              <div id="currency" class="currency field" v-bind:class="[currency == 'usd' ? 'usd' : 'mxn' ]">
+              <div id="currency" class="currency field" v-bind:class="[currency]">
                 <select name="currency" v-model="currency">
-                  <option value="usd" selected="selected">USD</option>
-                  <option value="mxn">MXN</option>
+                  <option v-for="currencyopt in currencies" v-bind:value="currencyopt">{{ currencyopt | capitalize }}</option>
                 </select>
               </div>
             </label>
