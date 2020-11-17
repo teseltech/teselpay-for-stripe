@@ -1,4 +1,16 @@
-var stripe = Stripe('pk_test_51HA5gFJMxUSJIePPhyPDoN5vfd7Jt9wHLfgnjzRErkCbhLomqNasb7ld55GRgGGzDmgNJrbPyKUmJMqbRybxEkvl00g0htS87a',  { locale: 'es-419'});
+const config = {
+  stripe: {
+    pk: "",
+    endpoint: ""
+  },
+  style: {
+    primarycolor: "",
+    secondarycolor: ""
+  }
+}
+
+
+var stripe = Stripe(config.stripe.pk,  { locale: 'es-419'});
 
 const router = new VueRouter({
   mode: 'history',
