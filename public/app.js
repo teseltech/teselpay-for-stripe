@@ -6,10 +6,6 @@ const config = {
       "usd",
       "mxn"
     ]
-  },
-  style: {
-    primarycolor: "",
-    secondarycolor: ""
   }
 }
 
