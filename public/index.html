@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+  <link rel="stylesheet" href="https://unpkg.com/normalize.css/normalize.css">
   <link rel="stylesheet" href="/style.css">
-
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 
   <link rel="icon" href="https://i0.wp.com/tesel.mx/wp-content/uploads/2017/05/cropped-favicon-167x167.png?fit=32%2C32&amp;ssl=1" sizes="32x32">
@@ -74,7 +74,6 @@
           </fieldset>
         </section>
         <button type="submit" @click="createToken" class="payment-button">Pagar</button>
-        <div id="data-button"></div>
         <div class="messages">
           <div class="element-message element-errors" v-bind:class="{ 'd-none': !errorMessage }">
             {{ errorMessage }}
