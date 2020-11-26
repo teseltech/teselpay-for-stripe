@@ -1,16 +1,4 @@
-const config = {
-  stripe: {
-    pk: "",
-    endpoint: "",
-    currencies: [
-      "usd",
-      "mxn"
-    ]
-  }
-}
-
-
-var stripe = Stripe(config.stripe.pk,  { locale: 'es-419'});
+var stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
 
 const router = new VueRouter({
   mode: 'history',
@@ -29,13 +17,13 @@ router.beforeEach((to, from, next) => {
     var re = /^(\d+)([A-Za-z]{3})$/;
     var amountcurrency = to.params.amountcurrency.match(re);
 
-    if(amountcurrency && config.stripe.currencies.includes(amountcurrency[2].toLowerCase()) && !isNaN(parseFloat(amountcurrency[1]))) {
+    if(amountcurrency && CONFIG.stripe.currencies.includes(amountcurrency[2].toLowerCase()) && !isNaN(parseFloat(amountcurrency[1]))) {
       next()
     } else {
       next({ path: '/', replace: false })
     }
 
-  } else if(config.stripe.currencies.includes(to.params.currency.toLowerCase()) && !isNaN(parseFloat(to.params.amount))) {
+  } else if(CONFIG.stripe.currencies.includes(to.params.currency.toLowerCase()) && !isNaN(parseFloat(to.params.amount))) {
     next()
   } else {
     next({ path: '/', replace: false })
@@ -74,8 +62,8 @@ var app = new Vue({
     errorMessage: '',
     successMessage: '',
     email: null,
-    currencies: config.stripe.currencies,
-    currency: config.stripe.currencies[0]
+    currencies: CONFIG.stripe.currencies,
+    currency: CONFIG.stripe.currencies[0]
   },
 
   /* Template available Filters */
@@ -143,7 +131,7 @@ var app = new Vue({
 
     stripeTokenHandler: function(token, amount, currency, description, email) {
 
-      var handlerurl = config.stripe.endpoint;
+      var handlerurl = CONFIG.stripe.endpoint;
       var paymentinfo = {
         token: token,
         amount: amount * 100,

@@ -18,6 +18,7 @@
     "public": "public",
     "ignore": [
       "firebase.json",
+      "config.template.js",
       "**/.*",
       "**/node_modules/**"
     ],

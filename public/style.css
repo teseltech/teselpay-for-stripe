@@ -350,11 +350,6 @@ fieldset .currency-label {
   transition-timing-function: cubic-bezier(.165,.84,.44,1);
 }
 
-.element-errors,.element-success {
-  background-size: 15px 15px;
-  background-position-y: 3px;
-}
-
 .element-errors {
   color: #e25950;
   background: url("/images/error.svg") center left no-repeat;
@@ -363,4 +358,9 @@ fieldset .currency-label {
 .element-success {
   color: #28a745;
   background: url("/images/success.svg") center left no-repeat;
+}
+
+.element-errors,.element-success {
+  background-size: 15px 15px;
+  background-position-y: 3px;
 }
