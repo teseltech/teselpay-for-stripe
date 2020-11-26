@@ -10,6 +10,9 @@ firebase-debug.log*
 # Config
 public/config.js
 
+# Firebase keys
+servicekey.json
+
 # Firebase cache
 .firebase/
 
