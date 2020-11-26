@@ -74,6 +74,20 @@ En este momento no hay _safeguards_ para las monedas, de modo que debes asegurar
 
 Por el momento las banderas que soportamos son exclusivamente las banderas de México y Estados Unidos, pero en siguientes versiones agregaremos más.
 
+### Firebase Functions Endpoint
+
+El endpoint para pruebas lo puedes encontrar al principio del log de tus emuladores de firebase.
+
+Una vez que ejecutes `firebase emulators:start` deberías tener un log parecido a este:
+
+```
+✔  functions[app]: http function initialized (http://localhost:5001/stripepayments-6c5b8/us-central1/app).
+```
+
+Ese es el endpoint. Nota que esta corriendo en `localhost:5001`
+
+Durante producción puedes encontrar la URL del endpoint en la consola de firebase. Una vez que estes en la consola ve al menu _Functions_ y copia la URL de la función correspondiente.
+
 ---
 
 Los colores y logotipos, incluido el favicon, deberás cambiarlos manualmente ya sea en `public/style.css` o `public/index.html`.
