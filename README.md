@@ -23,7 +23,6 @@ El proyecto esta diseñado para tener requerimientos mínimos. Utiliza Firebase 
 
 Todas las dependencias se adquieren vía CDN:
 
-- [Bootstrap](https://getbootstrap.com/)
 - [Google Fonts](https://fonts.google.com/)
 - [Stripe Javscript SDK](https://github.com/stripe/stripe-js)
 - [Vue](https://vuejs.org/) and [Vue router](https://router.vuejs.org/)
@@ -41,23 +40,27 @@ La interfaz comprende los siguientes archivos:
 
 En `public/index.html`
 
-Los estilos se definen principalmente en `public/style.css` pero se usa el sistema de grid de Bootstrap.
+Los estilos se definen en `public/style.css`.
 
 Toda la lógica del frontend se encuentra en `public/app.js` y esta escrita utilizando Vue.js exclusivamente.
 
 ### Configuración
 
-La configuración del proyecto se puede realizar en el objeto `config` de `public/app.js`.
+La configuración del proyecto se puede realizar en `public/config.js`. Este archivo no se incluye en el proyecto pero se puede realizar una copia de `public/config.template.js`.
 
 ```javascript
-const config = {
+const CONFIG = {
   stripe: {
     pk: "",
     endpoint: "",
     currencies: [
       "usd",
       "mxn"
-    ]
+    ],
+    options: {
+      locale:
+      'es-419'
+    }
   }
 }
 ```
@@ -65,6 +68,7 @@ const config = {
 - `pk`: La **Publishable Key** de Stripe. Puedes conseguirla en el [dashboard](https://dashboard.stripe.com/apikeys) de Stripe.
 - `endpoint`: La URL de la Firebase Cloud Function. Que puedes encontrar en la [consola](https://console.firebase.google.com/) de Firebase
 - `currencies`: Este es un arreglo de currencies en formato ISO que el sistema soporta.
+- `options`: son las opciones de Stripe Elements.
 
 En este momento no hay _safeguards_ para las monedas, de modo que debes asegurarte de que las monedas del arreglo `currencies` son soportada por Stripe.
 
