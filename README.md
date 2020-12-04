@@ -44,6 +44,57 @@ Los estilos se definen en `public/style.css`.
 
 Toda la lógica del frontend se encuentra en `public/app.js` y esta escrita utilizando Vue.js exclusivamente.
 
+### Configurando Firebase
+
+Una vez que hayas clonado el proyecto necesitarás crear un nuevo proyecto de firebase. Esto es más fácil de realizar desde https://console.firebase.google.com
+
+Crea un nuevo proyecto, selecciona la organización correspondiente y asegúrate de habilitar el billing del mismo. El plan de costos flexibles (on going) es suficiente y no tendría por qué generar ningún costo con uso moderado o pruebas.
+
+_Para poder utilizar Firebase Functions es necesario instalar Firebase cli. Puedes encontrar más información sobre cómo instalarlo [aquí](https://firebase.google.com/docs/cli)_
+
+Cuando hayas instalado Firbase CLI será necesario que instales el resto de las dependencias de las funciones con el siguiente comando
+
+```bash
+npm install
+cd functions
+npm install
+```
+
+---
+
+Después de haber creado el proyecto e instalado las dependencias regresa al directorio del proyecto que clonaste y corre el siguiente comando
+
+```bash
+firebase login         # Esto abrirá una pantalla de login en tu browser. Completa el proceso
+firebase use --add
+```
+
+Verás una selección de los proyectos de Firebase que tienes disponibles, escoge el que acabas de crear. Posteriormente te pedirá un alias para el proyecto, escribe `default`. Puedes elegir cualquier nombre, pero esto te ahorrara varios pasos más tarde.
+
+
+#### Configurando las firebase functions
+
+
+Las única Cloud Function necesaria se encuentra en `functions/src/index.ts` utiliza Express para registrar la función y poder utilizar CORS pero el código realmente es la función `handler`
+
+Necesitarás definir una variable de entorno con tu **Stripe Secret Key** con el comando
+
+```bash
+firebase functions:config:set stripe.secret="THE API KEY"
+```
+
+Esta llave la puedes obtener en el [dashboard](https://dashboard.stripe.com/apikeys) de Stripe
+
+
+Si todo salió bien ahora puedes correr el comando
+
+```bash
+firebase deploy --only functions
+```
+
+Una vez que terminé de hacer deploy regresa a la consola de firebase. Y ve a la sección Functions. Copia la URL de la función y pasa a la sección de configuración; esta URL es el `endpoint` que vas a usar a continuación.
+
+
 ### Configuración
 
 La configuración del proyecto se puede realizar en `public/config.js`. Este archivo no se incluye en el proyecto pero se puede realizar una copia de `public/config.template.js`.
@@ -72,16 +123,17 @@ const CONFIG = {
 
 En este momento no hay _safeguards_ para las monedas, de modo que debes asegurarte de que las monedas del arreglo `currencies` son soportada por Stripe.
 
-Por el momento las banderas que soportamos son exclusivamente las banderas de México y Estados Unidos, pero en siguientes versiones agregaremos más.
+Los íconos de banderas y currencies que soportamos son exclusivamente las banderas de México y Estados Unidos, pero en siguientes versiones agregaremos más.
 
-### Firebase Functions Endpoint
 
-El endpoint para pruebas lo puedes encontrar al principio del log de tus emuladores de firebase.
+#### Probar localmente
+
+Si deseas probar las funciones localmente, vas a tener que usar un endpoint de pruebas. Este lo puedes encontrar al principio del log de tus emuladores de firebase.
 
 Una vez que ejecutes `firebase emulators:start` deberías tener un log parecido a este:
 
 ```
-✔  functions[app]: http function initialized (http://localhost:5001/stripepayments-6c5b8/us-central1/app).
+✔  functions[app]: http function initialized (http://localhost:5001/<endpoint>/us-central1/app).
 ```
 
 Ese es el endpoint. Nota que esta corriendo en `localhost:5001`
@@ -91,29 +143,6 @@ Durante producción puedes encontrar la URL del endpoint en la consola de fireba
 ---
 
 Los colores y logotipos, incluido el favicon, deberás cambiarlos manualmente ya sea en `public/style.css` o `public/index.html`.
-
-## Firebase Cloud Functions+
-
-_Para poder utilizar Firebase Functions es necesario instalar Firebase cli. Puedes encontrar más información sobre cómo instalarlo [aquí](https://firebase.google.com/docs/cli)_
-
-Una vez que se instala Firbase CLI puedes instalar el resto de las dependencias con
-
-```bash
-npm install
-cd functions
-npm install
-```
-
-Las única Cloud Function necesaria se encuentra en `functions/src/index.ts` utiliza Express para registrar la función y poder utilizar CORS pero el código realmente es la función `handler`
-
-Necesitarás definir una variable de entorno con tu **Stripe Secret Key** con el comando
-
-```bash
-firebase functions:config:set stripe.secret="THE API KEY"
-```
-
-Esta llave la puedes obtener en el [dashboard](https://dashboard.stripe.com/apikeys) de Stripe
-
 
 # Contribuyendo
 
