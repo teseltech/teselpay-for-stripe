@@ -1,27 +1,27 @@
-Pagos Tesel utilizando la plataforma Stripe
+Tesel Payments using Stripe
 ===========================================
 
-Este repositorio es un ejemplo de pagos _eventuales_ usando [Stripe](https://stripe.com/). Esto significa que lo puedes ocupar para tomar un pago via Stripe sin necesidad de tener un producto registrado en la plataforma.
+This repository is an example of variable payments using [Stripe](https://stripe.com/). You can now accept payments through Stripe without registering inventory in the platform. 
 
-![Screenshot del sistema de pagos](screenshot.png)
+![Payments system screenshot](screenshot.png)
 
-Mediante `vue-router` soporta cuatro diferentes URL paths, para `MXN` y `USD` por ejemplo:
+Throug `vue-router` it supports four different URL paths. Using `MXN` and `USD` as an example:
 
-- http://localhost:5000/mxn/1000 abre el formulario de pago con `MXN` como moneda y el monto en $1,000
-- http://localhost:5000/usd/1000 abre el formulario de pago con `USD` como moneda y el monto en $1,000
-- http://localhost:500/1000mxn abre el formulario de pago con `MXN` como moneda y el monto en $1,000
-- http://localhost:5000 abre el formulario en blanco
+- http://localhost:5000/mxn/1000 opens the payments screen with `MXN` as the currency and $1,000 as the ammount
+- http://localhost:5000/usd/1000 opens the payments screen with `USD` as the currency and $1,000 as the ammount
+- http://localhost:500/1000mxn opens the payments screen with `MXN` as the currency and $1,000 as the ammount
+- http://localhost:5000 opens the payments screen with all fields empty
 
-Todos estos URL paths funcionan sin importar las mayúsculas o minúsculas.
+These URL paths are not case sentsitive.
 
-El proyecto utiliza Stripe Elements, Vue y Firebase Cloud Functions.
+The project uses Stripe Elements, Vue and Firebase Cloud Functions.
 
 
-El proyecto esta diseñado para tener requerimientos mínimos. Utiliza Firebase Cloud Functions como backend, lo cual requiere de un entorno de Node. Mientras que todas las dependencias de la interfaz web se adquieren via CDN.
+The project is designed to have minimum requirements, both of maintenance and infrastructure. It uses Firebase Cloud Functions as the backend, which requires a Node environment. All of the web interface dependencies are obtained through CDN.
 
-## Interfaz Web
+## Web Interface
 
-Todas las dependencias se adquieren vía CDN:
+All dependencies are obtained through CDN.
 
 - [Google Fonts](https://fonts.google.com/)
 - [Stripe Javscript SDK](https://github.com/stripe/stripe-js)
@@ -29,30 +29,30 @@ Todas las dependencias se adquieren vía CDN:
 - [Vue Currency Input](https://github.com/dm4t2/vue-currency-input)
 - [axios](https://github.com/axios/axios)
 
-### Estructura
+### Structure
 
-La interfaz comprende los siguientes archivos:
+The interface is composed by the following files:
 
 - `public/index.html`
 - `public/style.css`
 - `public/app.js`
 - `public/images/`
 
-En `public/index.html`
+In `public/index.html`
 
-Los estilos se definen en `public/style.css`.
+The styles are defined in `public/style.css`.
 
-Toda la lógica del frontend se encuentra en `public/app.js` y esta escrita utilizando Vue.js exclusivamente.
+The frontend logic can be found in `public/app.js` which is written exclusively in Vue.js.
 
-### Configurando Firebase
+### Firebase Config
 
-Una vez que hayas clonado el proyecto necesitarás crear un nuevo proyecto de firebase. Esto es más fácil de realizar desde https://console.firebase.google.com
+After cloning the project you will need a new Firebase project. The easiest way is to use https://console.firebase.google.com
 
-Crea un nuevo proyecto, selecciona la organización correspondiente y asegúrate de habilitar el billing del mismo. El plan de costos flexibles (on going) es suficiente y no tendría por qué generar ningún costo con uso moderado o pruebas.
+Create a new project, select the organization and make sure to enable billing for it. The flexible costs plan (ongoing) is enough and should not generate additional costs if used in moderartion or for testing. Be mindful and estimate your usage.
 
-_Para poder utilizar Firebase Functions es necesario instalar Firebase cli. Puedes encontrar más información sobre cómo instalarlo [aquí](https://firebase.google.com/docs/cli)_
+_ In order to use Firebase Functions it is necesary to install Firebase CLI. You can find more information on how to install it [here](https://firebase.google.com/docs/cli)_
 
-Cuando hayas instalado Firbase CLI será necesario que instales el resto de las dependencias de las funciones con el siguiente comando
+After installing Firebase CLI install the remaining dependencies using the following commands:
 
 ```bash
 npm install
@@ -62,42 +62,42 @@ npm install
 
 ---
 
-Después de haber creado el proyecto e instalado las dependencias regresa al directorio del proyecto que clonaste y corre el siguiente comando
+After creating the project and installing the dependencies return to the project's directory and run the following commands:
 
 ```bash
-firebase login         # Esto abrirá una pantalla de login en tu browser. Completa el proceso
+firebase login         # Opens a login screen in your browser. Complete the process
 firebase use --add
 ```
 
-Verás una selección de los proyectos de Firebase que tienes disponibles, escoge el que acabas de crear. Posteriormente te pedirá un alias para el proyecto, escribe `default`. Puedes elegir cualquier nombre, pero esto te ahorrara varios pasos más tarde.
+You will see your Firebase projects, choose the one you just created. Choose an alias for the project, we recommend naming it `default`. You can choose whichever name you want, but this will save you some time later on.
 
 
-#### Configurando las firebase functions
+#### Configure the Firebase functions
 
 
-Las única Cloud Function necesaria se encuentra en `functions/src/index.ts` utiliza Express para registrar la función y poder utilizar CORS pero el código realmente es la función `handler`
+The only Cloud Function needed can be found in `functions/src/index.ts`. USe Express to register the function and use CORS, though the code is really the function `handler`
 
-Necesitarás definir una variable de entorno con tu **Stripe Secret Key** con el comando
+Define an environment varibale with your **Stripe Secret Key** using the commands:
 
 ```bash
 firebase functions:config:set stripe.secret="THE API KEY"
 ```
 
-Esta llave la puedes obtener en el [dashboard](https://dashboard.stripe.com/apikeys) de Stripe
+You can obtain your key in your Stripe account's [dashboard](https://dashboard.stripe.com/apikeys)
 
 
-Si todo salió bien ahora puedes correr el comando
+If everything was done correctly you can now input the commands:
 
 ```bash
 firebase deploy --only functions
 ```
 
-Una vez que terminé de hacer deploy regresa a la consola de firebase. Y ve a la sección Functions. Copia la URL de la función y pasa a la sección de configuración; esta URL es el `endpoint` que vas a usar a continuación.
+Once deployed return to the Firebase console and open the Functions section. Copy the function's URL and proceed to the Settings section. This URL is the `endpoint` you'll use in the following section.
 
 
-### Configuración
+### Settings
 
-La configuración del proyecto se puede realizar en `public/config.js`. Este archivo no se incluye en el proyecto pero se puede realizar una copia de `public/config.template.js`.
+The project's settings can be set in `public/config.js`. This file is not included in the project but you can make a copy of `public/config.template.js`.
 
 ```javascript
 const CONFIG = {
@@ -116,44 +116,44 @@ const CONFIG = {
 }
 ```
 
-- `pk`: La **Publishable Key** de Stripe. Puedes conseguirla en el [dashboard](https://dashboard.stripe.com/apikeys) de Stripe.
-- `endpoint`: La URL de la Firebase Cloud Function. Que puedes encontrar en la [consola](https://console.firebase.google.com/) de Firebase
-- `currencies`: Este es un arreglo de currencies en formato ISO que el sistema soporta.
-- `options`: son las opciones de Stripe Elements.
+- `pk`: Stripe's **Publishable Key**. You can obtain your key in your Stripe account's [dashboard](https://dashboard.stripe.com/apikeys)
+- `endpoint`: The Firebase Cloud Function URL. It can be found in the Firebase [console](https://console.firebase.google.com/)
+- `currencies`: Currency array in ISO format, which is supported by the system
+- `options`: Stripe Elements options
 
-En este momento no hay _safeguards_ para las monedas, de modo que debes asegurarte de que las monedas del arreglo `currencies` son soportada por Stripe.
+At this time there are no  _safeguards_ for the currencies, make sure the currencies in the `currencies` array are supported by Stripe.
 
-Los íconos de banderas y currencies que soportamos son exclusivamente las banderas de México y Estados Unidos, pero en siguientes versiones agregaremos más.
+The flag icons and currencies we support right now are only Mexico and the United States, but we will add more in future versions.
 
 
-### Deploy completo
+### Deploy
 
-Para poder ver la página en el servidor remoto solo es necesario que hagas
+To see the web page in a remote server input the command:
 
 ```bash
 firebase deploy
 ```
 
-Este comando publica tanto las Cloud Functions como la página de hosting. Una vez que este publicado puedes visitar la página en la URL proporcionada en el dashboard de Firebase, en la sección hosting.
+This command publishes the CLoud Functions and the hosting website. Once published you can visit the URL generated in the Hosting section of the Firebase dashboard.
 
-## Probar localmente
+## Local Test
 
-Si deseas probar las funciones localmente, vas a tener que usar un endpoint de pruebas. Este lo puedes encontrar al principio del log de tus emuladores de firebase.
+To test the functions locally use a test endpoint. You can find it at the beginning of your Firebase emmulator log.
 
-Una vez que ejecutes `firebase emulators:start` deberías tener un log parecido a este:
+Exacute `firebase emulators:start` to get a log similar to the following example:
 
 ```
 ✔  functions[app]: http function initialized (http://localhost:5001/<endpoint>/us-central1/app).
 ```
 
-Ese es el endpoint. Nota que esta corriendo en `localhost:5001`
+This is the endpoint. Note that it is running in `localhost:5001`
 
-Durante producción puedes encontrar la URL del endpoint en la consola de firebase. Una vez que estes en la consola ve al menu _Functions_ y copia la URL de la función correspondiente.
+During production you can find the endpoint's URL in the Firebase console. In the console go to the  _Functions_ menu and copy the URL of the function you're working on.
 
 ---
 
-Los colores y logotipos, incluido el favicon, deberás cambiarlos manualmente ya sea en `public/style.css` o `public/index.html`.
+The colors and logos, including the favicon, can be changed manually in either `public/style.css` or `public/index.html`.
 
-# Contribuyendo
+# Contributions
 
-El proyecto esta liberado bajo la licencia MIT. Si quieres hacer un pull request puedes hacerlo así como levantar Issues en el issue tracker de GitHub. Si el proyecto llegara a crecer, es posible que se implementen guidelines más estrictos de contribución.
+The project is released under MIT license. If you want to make a pull request you can do so, as well as raise issues in Github's issue tracker. Stricter contribution guidelines might be implmented as the project grows.
