@@ -1,7 +1,7 @@
 var stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
 
 const i18n = new VueI18n({
-  locale: 'es',
+  locale: CONFIG.language,
   messages
 })
 
