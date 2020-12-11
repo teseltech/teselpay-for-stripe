@@ -321,13 +321,100 @@ fieldset label.amount input {
   margin-right: 10px;
 }
 
+/* Stripe supported currencies: https://stripe.com/docs/currencies */
+
+/* US dollar */
 .usd::before {
   background-position: -10px -185px;
 }
 
+/* Peso argentino */
+.ars::before {
+  background-position: -134px -10px;
+}
+
+/* Australian dollar */
+.aud::before {
+  background-position: -196px -10px;
+}
+
+/* Boliviano */
+.bob::before {
+  background-position: -320px -10px;
+}
+
+/* Real (Brasil) */
+.brl::before {
+  background-position: -351px -10px;
+}
+
+/* Canadian Dollar */
+.cad::before {
+  background-position: -382px -10px;
+}
+
+/* Peso chileno */
+.clp::before {
+  background-position: -506px -10px;
+}
+
+/* Swiss franc */
+.chf::before {
+  background-position: -475px -10px;
+}
+
+/* Chinese Yuan */
+.cny::before {
+  background-position: -41px -35px;
+}
+
+/* Peso colombiano */
+.cop::before {
+  background-position: -72px -35px;
+}
+
+/* Euros */
+.eur::before {
+  background-position: -413px -35px;
+}
+
+/* GBP */
+.gbp::before {
+  background-position: -41px -60px;
+}
+
+/* Hong Kong Dollar  */
+.hkd::before {
+  background-position: -227px -60px;
+}
+
+/* Lempira (Honduras)  */
+.hnl::before {
+  background-position: -258px -60px;
+}
+
+/* Japanese Yen  */
+.jpy::before {
+  background-position: -196px -85px;
+}
+
+/* Peso mexicano */
 .mxn::before {
   background-position: -289px -110px;
 }
+
+/* Córdoba (Nicaragua)  */
+.nio::before {
+  background-position: -444px -110px;
+}
+
+/* Peso uruguayo  */
+.uyu::before {
+  background-position: -41px -185px;
+}
+
+
+
 
 fieldset .currency-label {
   width: 32%;
