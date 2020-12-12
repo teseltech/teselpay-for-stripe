@@ -1,15 +1,15 @@
 Tesel Payments using Stripe
-===========================================
+===========================
 
-This repository is an example of variable payments using [Stripe](https://stripe.com/). You can now accept payments through Stripe without registering inventory in the platform. 
+This repository is an example of variable payments using [Stripe](https://stripe.com/). You can now accept payments through Stripe without registering inventory in the platform.
 
 ![Payments system screenshot](screenshot.png)
 
 Throug `vue-router` it supports four different URL paths. Using `MXN` and `USD` as an example:
 
-- http://localhost:5000/mxn/1000 opens the payments screen with `MXN` as the currency and $1,000 as the ammount
-- http://localhost:5000/usd/1000 opens the payments screen with `USD` as the currency and $1,000 as the ammount
-- http://localhost:500/1000mxn opens the payments screen with `MXN` as the currency and $1,000 as the ammount
+- http://localhost:5000/mxn/1000 opens the payments screen with `MXN` as the currency and $1,000 as the amount
+- http://localhost:5000/usd/1000 opens the payments screen with `USD` as the currency and $1,000 as the amount
+- http://localhost:500/1000mxn opens the payments screen with `MXN` as the currency and $1,000 as the amount
 - http://localhost:5000 opens the payments screen with all fields empty
 
 These URL paths are not case sentsitive.
@@ -48,9 +48,9 @@ The frontend logic can be found in `public/app.js` which is written exclusively 
 
 After cloning the project you will need a new Firebase project. The easiest way is to use https://console.firebase.google.com
 
-Create a new project, select the organization and make sure to enable billing for it. The flexible costs plan (ongoing) is enough and should not generate additional costs if used in moderartion or for testing. Be mindful and estimate your usage.
+Create a new project, select the organization and make sure to enable billing for it. The flexible costs plan (ongoing) is enough and should not generate additional costs if used in moderation or for testing. Be mindful and estimate your usage.
 
-_ In order to use Firebase Functions it is necesary to install Firebase CLI. You can find more information on how to install it [here](https://firebase.google.com/docs/cli)_
+_ In order to use Firebase Functions it is necessary to install Firebase CLI. You can find more information on how to install it [here](https://firebase.google.com/docs/cli)_
 
 After installing Firebase CLI install the remaining dependencies using the following commands:
 
@@ -75,9 +75,9 @@ You will see your Firebase projects, choose the one you just created. Choose an 
 #### Configure the Firebase functions
 
 
-The only Cloud Function needed can be found in `functions/src/index.ts`. USe Express to register the function and use CORS, though the code is really the function `handler`
+The only Cloud Function needed can be found in `functions/src/index.ts`. Use Express to register the function and use CORS, though the code is really the function `handler`
 
-Define an environment varibale with your **Stripe Secret Key** using the commands:
+Define an environment variable with your **Stripe Secret Key** using the commands:
 
 ```bash
 firebase functions:config:set stripe.secret="THE API KEY"
@@ -121,10 +121,32 @@ const CONFIG = {
 - `currencies`: Currency array in ISO format, which is supported by the system
 - `options`: Stripe Elements options
 
-At this time there are no  _safeguards_ for the currencies, make sure the currencies in the `currencies` array are supported by Stripe.
+At this time there are no  _safeguards_ for the currencies, make sure the currencies in the `currencies` array are [supported by Stripe](https://stripe.com/docs/currencies).
 
-The flag icons and currencies we support right now are only Mexico and the United States, but we will add more in future versions.
+Currently supported flag icons for matching currencies:
 
+```
+currencies: [
+        "usd",
+        "ars",
+        "aud",
+        "bob",
+        "brl",
+        "cad",
+        "chf",
+        "clp",
+        "cny",
+        "cop",
+        "eur",
+        "gbp",
+        "hkd",
+        "hnl",
+        "jpy",
+        "mxn",
+        "nio",
+        "uyu"
+      ]
+```
 
 ### Deploy
 
@@ -134,13 +156,13 @@ To see the web page in a remote server input the command:
 firebase deploy
 ```
 
-This command publishes the CLoud Functions and the hosting website. Once published you can visit the URL generated in the Hosting section of the Firebase dashboard.
+This command publishes the Cloud Functions and the hosting website. Once published you can visit the URL generated in the _Hosting_ section of the Firebase dashboard.
 
 ## Local Test
 
-To test the functions locally use a test endpoint. You can find it at the beginning of your Firebase emmulator log.
+To test the functions locally use a test endpoint. You can find it at the beginning of your Firebase emulator log.
 
-Exacute `firebase emulators:start` to get a log similar to the following example:
+Execute `firebase emulators:start` to get a log similar to the following example:
 
 ```
 ✔  functions[app]: http function initialized (http://localhost:5001/<endpoint>/us-central1/app).
@@ -156,4 +178,8 @@ The colors and logos, including the favicon, can be changed manually in either `
 
 # Contributions
 
-The project is released under MIT license. If you want to make a pull request you can do so, as well as raise issues in Github's issue tracker. Stricter contribution guidelines might be implmented as the project grows.
+The project is released under MIT license. If you want to make a pull request you can do so, as well as raise _Issues_ in Github's _Issue tracker._ Stricter contribution guidelines might be implemented as the project grows.
+
+## Supporting the project
+
+If you'd like to support the project you can also donate to us at https://pay.tesel.tech where you can also see the project implemented
