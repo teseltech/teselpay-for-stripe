@@ -1,8 +1,4 @@
 Tesel Payments using Stripe
-===========================================
-
-This repository is an example of variable payments using [Stripe](https://stripe.com/). You can now accept payments through Stripe without registering inventory in the platform.
-=======
 ===========================
 
 This repository is an example of variable payments using [Stripe](https://stripe.com/). You can now accept payments through Stripe without registering inventory in the platform.
