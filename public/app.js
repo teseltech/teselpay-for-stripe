@@ -1,5 +1,11 @@
 var stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
 
+const i18n = new VueI18n({
+  locale: CONFIG.language,
+  messages
+})
+
+
 const router = new VueRouter({
   mode: 'history',
   routes: [
@@ -32,6 +38,9 @@ router.beforeEach((to, from, next) => {
 
 var app = new Vue({
   el: '#app',
+
+  i18n,
+
   router: router,
 
   /* Watch for changes in objects */

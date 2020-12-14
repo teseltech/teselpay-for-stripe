@@ -14,38 +14,39 @@
 </head>
 <body>
 
+  <div id="app">
   <header>
     <div class="container text-center">
       <img src="/images/TESEL_isologo.svg" alt="Tesel Tech">
-      <h1>Sistema de pagos</h1>
+      <h1>{{ $t("message.header") }}</h1>
     </div>
   </header>
 
   <div class="container">
-  <form id="app" class="app" @submit="createToken" action="/" method="post" v-cloak>
+  <form class="app" @submit="createToken" action="/" method="post" v-cloak>
     <div class="row">
       <div id="left" class="col-left">
 
         <section>
-          <h2>Información</h2>
+          <h2>{{ $t("message.info") }}</h2>
           <fieldset class="with-state">
             <label for="data-name">
-              <span>Cliente</span>
-              <input name="name" type="text" id="data-name" v-model="description" @focus="$event.target.select()" class="field" placeholder="Nombre o empresa" required>
+              <span>{{ $t("message.client") }}</span>
+              <input name="name" type="text" id="data-name" v-model="description" @focus="$event.target.select()" class="field" v-bind:placeholder="$t('message.name')" required>
             </label>
             <label for="data-email">
-              <span>Email</span>
-              <input name="email" type="email" id="data-email" v-model="email" @focus="$event.target.select()" class="field" placeholder="micorreo@ejemplo.com" required>
+              <span>{{ $t('message.emailaddress') }}</span>
+              <input name="email" type="email" id="data-email" v-model="email" @focus="$event.target.select()" class="field" v-bind:placeholder="$t('message.email')" required>
             </label>
             <label for="data-concept">
-              <span>Concepto</span>
-              <input name="concept" type="text" id="data-concept" class="field" placeholder="¿De qué es este pago?" required>
+              <span>{{ $t('message.conceptdescription') }}</span>
+              <input name="concept" type="text" id="data-concept" class="field" v-bind:placeholder="$t('message.concept')" required>
             </label>
         </fieldset>
         </section>
 
         <section>
-          <h2>Pago con tarjeta</h2>
+          <h2>{{ $t('message.cardinfo') }}</h2>
           <div class="form-group">
             <fieldset>
               <label for="data-card">
@@ -59,7 +60,7 @@
 
       <div id="right" class="col-right">
         <section>
-          <h2>Monto</h2>
+          <h2>{{ $t('message.amount') }}</h2>
           <fieldset>
             <label for="data-amount" class="amount">
               <currency-input name="amount" v-model="amount" @focus="$event.target.select()" currency="USD" locale="en" valueAsInteger="false" allowNegative="false"/>
@@ -73,7 +74,7 @@
             </label>
           </fieldset>
         </section>
-        <button type="submit" @click="createToken" class="payment-button">Pagar</button>
+        <button type="submit" @click="createToken" class="payment-button">{{ $t('message.pay') }}</button>
         <div class="messages">
           <div class="element-message element-errors" v-bind:class="{ 'd-none': !errorMessage }">
             {{ errorMessage }}
@@ -86,9 +87,16 @@
     </div>
   </form>
   </div>
+  <footer>
+    <div class="container">
+      <p>Powered by <a href="https://tesel.tech">Tesel</a></p>
+    </div>
+  </footer>
+  </div>
 
   <script src="https://js.stripe.com/v3/"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
   <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
   <script src="https://unpkg.com/vue-currency-input"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
