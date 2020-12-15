@@ -176,15 +176,17 @@ var app = new Vue({
           break;
 
           default:
-          if(data.outcome.type == 'authorized') {
-            this.successMessage = '¡Muchas gracias, recibimos tu pago!'
-            this.card.clear();
-            this.amount = '0.0';
-          } else {
-            this.errorMessage = 'Ocurrió un error desconocido. Por favor contáctanos.'
+          if(data.outcome) {
+            if(data.outcome.type == 'authorized') {
+              this.successMessage = '¡Muchas gracias, recibimos tu pago!'
+              this.card.clear();
+              this.amount = '0.0';
+            }
+            } else {
+              this.errorMessage = 'Ocurrió un error desconocido. Por favor contáctanos.'
+            }
           }
-        }
-      });
+        });
+      }
     }
-  }
-});
+  });
