@@ -9,11 +9,11 @@
   -webkit-text-size-adjust: none;
 }
 
-form[v-cloak]>div {
+form[v-cloak]>div, h1[v-cloak] {
   display: none;
 }
 
-form[v-cloak]::before {
+form[v-cloak]::before, h1[v-cloak]::before {
   content: "Cargando...";
 }
 
