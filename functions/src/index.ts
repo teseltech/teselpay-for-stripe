@@ -11,13 +11,13 @@ const app = express();
 
 const secretHandler = async (request: any, response: any) => {
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: 1099,
-    currency: 'mxn',
+    amount: request.body.amount,
+    currency: request.body.currency,
   });
   response.json({client_secret: paymentIntent.client_secret});
 }
 
 app.use(cors);
-app.get('/secret', secretHandler);
+app.post('/secret', secretHandler);
 
 exports.app = functions.https.onRequest(app);

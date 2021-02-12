@@ -86,21 +86,6 @@ var app = new Vue({
     }
   },
 
-  /* Function to run just after the module is mounted */
-
-  created: function () {
-    var handlerurl = CONFIG.stripe.endpoint;
-
-    console.info('Will attempt to retrieve paymentIntent');
-
-    this.clientSecret = fetch(handlerurl).then(function(response) {
-      return response.json();
-    }).then(function(responseJson) {
-      console.info('Connecting to server');
-      return responseJson.client_secret;
-    });
-  },
-
   mounted: function() {
     if(this.$route.params.currency && this.$route.params.amount){
       this.currency = this.$route.params.currency.toLowerCase();
@@ -135,6 +120,30 @@ var app = new Vue({
     createToken: async function(e) {
 
       e.preventDefault();
+
+      var handlerurl = CONFIG.stripe.endpoint;
+      var data = {
+        amount: this.amount * 100,
+        currency:  this.currency
+      }
+      var options = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      };
+
+      console.info('Will attempt to retrieve paymentIntent');
+
+      this.clientSecret = fetch(handlerurl, options).then(function(response) {
+        return response.json();
+      }).then(function(responseJson) {
+        console.info('Connected to server & retrieved paymentIntent');
+        return responseJson.client_secret;
+      });
+
       if(this.description && this.email && this.amount) {
 
         stripe.confirmCardPayment(
@@ -159,6 +168,5 @@ var app = new Vue({
         this.errorMessage = 'Por favor completa todos los campos'
       }
     },
-
   }
 });
