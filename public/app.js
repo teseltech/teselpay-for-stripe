@@ -72,7 +72,8 @@ var app = new Vue({
     successMessage: '',
     email: null,
     currencies: CONFIG.stripe.currencies,
-    currency: CONFIG.stripe.currencies[0]
+    currency: CONFIG.stripe.currencies[0],
+    clientSecret: null
   },
 
   /* Template available Filters */
@@ -87,8 +88,20 @@ var app = new Vue({
 
   /* Function to run just after the module is mounted */
 
-  mounted: function() {
+  created: function () {
+    var handlerurl = CONFIG.stripe.endpoint;
 
+    console.info('Will attempt to retrieve paymentIntent');
+
+    this.clientSecret = fetch(handlerurl).then(function(response) {
+      return response.json();
+    }).then(function(responseJson) {
+      console.info('Connecting to server');
+      return responseJson.client_secret;
+    });
+  },
+
+  mounted: function() {
     if(this.$route.params.currency && this.$route.params.amount){
       this.currency = this.$route.params.currency.toLowerCase();
       this.amount = this.$route.params.amount;
@@ -119,74 +132,33 @@ var app = new Vue({
   /* Template and module available Methods */
 
   methods: {
-    createToken: function(e) {
+    createToken: async function(e) {
+
       e.preventDefault();
       if(this.description && this.email && this.amount) {
-        stripe.createToken(this.card)
-        .then((result) => {
+
+        stripe.confirmCardPayment(
+          await this.clientSecret,
+          {
+            payment_method: {card: this.card}
+          }
+        ).then((result) => {
           if(result.error) {
-            console.error(result.error);
+            console.error('Ocurrió un error');
             this.errorMessage = result.error.message;
-          } else {
+          } else if(result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+            console.info('Se ejecutó correctamente');
             this.errorMessage = '';
-            this.successMessage = '';
-            this.stripeTokenHandler(result.token, this.amount, this.currency, this.description, this.email);
+            this.successMessage = '¡Muchas gracias, recibimos tu pago!';
+            this.card.clear();
+            this.amount = '0.0';
           }
         });
+
       } else {
         this.errorMessage = 'Por favor completa todos los campos'
       }
     },
 
-    stripeTokenHandler: function(token, amount, currency, description, email) {
-
-      var handlerurl = CONFIG.stripe.endpoint;
-      var paymentinfo = {
-        token: token,
-        amount: amount * 100,
-        currency: currency,
-        description: description,
-        email: email
-      };
-
-      console.info('Will attempt to authorize the payment', paymentinfo);
-
-      axios.post(handlerurl, paymentinfo).then(response => {
-        var data = response.data;
-        console.info(data);
-        switch(data.code) {
-          case 'card_declined':
-          this.errorMessage = data.raw.message;
-          break;
-
-          case 'expired_card':
-          this.errorMessage = data.raw.message;
-          break;
-
-          case 'incorrect_cvc':
-          this.errorMessage = data.raw.message;
-          break;
-
-          case 'processing_error':
-          this.errorMessage = data.raw.message;
-          break;
-
-          case 'incorrect_number':
-          this.errorMessage = data.raw.message;
-          break;
-
-          default:
-          if(data.outcome) {
-            if(data.outcome.type == 'authorized') {
-              this.successMessage = '¡Muchas gracias, recibimos tu pago!'
-              this.card.clear();
-              this.amount = '0.0';
-            }
-            } else {
-              this.errorMessage = 'Ocurrió un error desconocido. Por favor contáctanos.'
-            }
-          }
-        });
-      }
-    }
-  });
+  }
+});
