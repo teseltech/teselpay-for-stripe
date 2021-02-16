@@ -41,6 +41,10 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+Vue.component("confirmation", {
+  template: "#confirmation-template"
+});
+
 var app = new Vue({
   el: '#app',
 
