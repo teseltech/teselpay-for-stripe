@@ -9,29 +9,15 @@ const stripe = new Stripe(functions.config().stripe.secret, {
 
 const app = express();
 
-const handler = async (request: any, response: any) => {
-  const tok: string = request.body.token.id;
-  const charge = await stripe.charges.create({
+const secretHandler = async (request: any, response: any) => {
+  const paymentIntent = await stripe.paymentIntents.create({
     amount: request.body.amount,
     currency: request.body.currency,
-    description: request.body.email + ': ' + request.body.description,
-    receipt_email: request.body.email,
-    source: tok,
-  })
-  .catch(result => {
-    return result;
-  })
-  .then(result => {
-    return result;
   });
-  console.info(charge)
-  response.send(charge);
+  response.json({client_secret: paymentIntent.client_secret});
 }
 
 app.use(cors);
-app.use(handler);
-app.post('/', (req: any, res: any) => {
-  res.send('hello')
-})
+app.post('/secret', secretHandler);
 
 exports.app = functions.https.onRequest(app);

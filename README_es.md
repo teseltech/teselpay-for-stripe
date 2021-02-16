@@ -27,7 +27,6 @@ Todas las dependencias se adquieren vía CDN:
 - [Stripe Javscript SDK](https://github.com/stripe/stripe-js)
 - [Vue](https://vuejs.org/) and [Vue router](https://router.vuejs.org/)
 - [Vue Currency Input](https://github.com/dm4t2/vue-currency-input)
-- [axios](https://github.com/axios/axios)
 
 ### Estructura
 
@@ -172,6 +171,8 @@ Una vez que ejecutes `firebase emulators:start` deberías tener un log parecido 
 Ese es el endpoint. Nota que está corriendo en `localhost:5001`
 
 En tu ambiente de producción puedes encontrar la URL del endpoint en la consola de firebase. Una vez que estés en la consola ve al menu _Functions_ y copia la URL de la función correspondiente.
+
+Debido a que estamos empleando Typescript siempre recuerda ejecutar `npm run build` antes de ejecutar los emuladores la siguiente vez para cross-compilar el código.
 
 ---
 
