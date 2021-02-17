@@ -1,10 +1,15 @@
+/**
+* Stripe library initialization
+*
+* @property {string} CONFIG.stripe.pk Publishable Stripe Key
+* @property {string} CONFIG.stripe.options Other options for Stripe Elements
+*/
 var stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
 
 const i18n = new VueI18n({
   locale: CONFIG.language,
   messages
 })
-
 
 const router = new VueRouter({
   mode: 'history',
@@ -36,6 +41,21 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+Vue.use(VueCurrencyFilter, {
+    symbol: "$",
+    thousandsSeparator: ",",
+    fractionCount: 0,
+    fractionSeparator: ".",
+    symbolPosition: "front",
+    symbolSpacing: true,
+    avoidEmptyDecimals: '##',
+  });
+
+Vue.component("confirmation", {
+  props: ['amount', 'client', 'email'],
+  template: "#confirmation-template"
+});
+
 var app = new Vue({
   el: '#app',
 
@@ -43,8 +63,27 @@ var app = new Vue({
 
   router: router,
 
-  /* Watch for changes in objects */
+  /* Module variables */
+  data: {
+    elements: null,
+    card: null,
 
+    client: '',
+    email: null,
+    description: '',
+    amount: '0.0',
+
+    currencies: CONFIG.stripe.currencies,
+    currency: CONFIG.stripe.currencies[0],
+
+    errorMessage: '',
+    successMessage: '',
+
+    clientSecret: null,
+    showConfirmation: false
+  },
+
+  /* Watch for changes in objects */
   watch: {
     $route(to, from){
       if(to.params.currency && to.params.amount) {
@@ -61,31 +100,7 @@ var app = new Vue({
     }
   },
 
-  /* Module variables */
-
-  data: {
-    elements: null,
-    card: null,
-    amount: '0.0',
-    description: '',
-    errorMessage: '',
-    successMessage: '',
-    email: null,
-    currencies: CONFIG.stripe.currencies,
-    currency: CONFIG.stripe.currencies[0],
-    clientSecret: null
-  },
-
-  /* Template available Filters */
-
-  filters: {
-    capitalize: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.toUpperCase()
-    }
-  },
-
+  /* Actions to take after module is mounted */
   mounted: function() {
     if(this.$route.params.currency && this.$route.params.amount){
       this.currency = this.$route.params.currency.toLowerCase();
@@ -115,7 +130,6 @@ var app = new Vue({
   },
 
   /* Template and module available Methods */
-
   methods: {
     createToken: async function(e) {
 
@@ -157,10 +171,11 @@ var app = new Vue({
             this.errorMessage = result.error.message;
           } else if(result.paymentIntent && result.paymentIntent.status === 'succeeded') {
             console.info('Se ejecutó correctamente');
+
+            this.showConfirmation = true;
             this.errorMessage = '';
             this.successMessage = '¡Muchas gracias, recibimos tu pago!';
             this.card.clear();
-            this.amount = '0.0';
           }
         });
 
@@ -168,5 +183,15 @@ var app = new Vue({
         this.errorMessage = 'Por favor completa todos los campos'
       }
     },
+  },
+
+  /* Template available Filters */
+  filters: {
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.toUpperCase()
+    }
   }
+
 });
