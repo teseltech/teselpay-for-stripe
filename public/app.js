@@ -41,6 +41,16 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+Vue.use(VueCurrencyFilter, {
+    symbol: "$",
+    thousandsSeparator: ",",
+    fractionCount: 0,
+    fractionSeparator: ".",
+    symbolPosition: "front",
+    symbolSpacing: true,
+    avoidEmptyDecimals: '##',
+  });
+
 Vue.component("confirmation", {
   props: ['amount', 'client', 'email'],
   template: "#confirmation-template"

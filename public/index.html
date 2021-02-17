@@ -92,9 +92,7 @@
       <p>Powered by <a href="https://tesel.tech">Tesel</a></p>
     </div>
   </footer>
-  <keep-alive>
-    <confirmation v-if="showConfirmation" :amount="amount" :client="client" :email="email" @close="showConfirmation=false"></confirmation>
-  </keep-alive>
+  <confirmation v-if="showConfirmation" :amount="amount" :client="client" :email="email" @close="showConfirmation=false"></confirmation>
   </div>
 
   <script type="text/x-template" id="confirmation-template">
@@ -104,7 +102,7 @@
             <div class="confirmation-container" @click="$event.stopPropagation()">
               <div class="confirmation-body">
                 <h3>Recibimos tu pago</h3>
-                <p class="confirmation-amount">{{ amount }}</p>
+                <p class="confirmation-amount">{{ amount | currency }}</p>
                 <p>Muchas gracias, {{ client }}. Recibimos tu pago.</p>
                 <p class="email-thanks">Ya enviamos tu recibo a:</p>
                 <p class="email">{{ email }}</p>
@@ -121,6 +119,7 @@
   <script src="https://unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
   <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
   <script src="https://unpkg.com/vue-currency-input"></script>
+  <script src="https://unpkg.com/vue-currency-filter"></script>
   <script src="/config.js" type="text/javascript"></script>
   <script src="/app.js" type="text/javascript"></script>
 </body>
