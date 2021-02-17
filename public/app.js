@@ -42,6 +42,7 @@ router.beforeEach((to, from, next) => {
 });
 
 Vue.component("confirmation", {
+  props: ['amount', 'client', 'email'],
   template: "#confirmation-template"
 });
 
@@ -56,13 +57,18 @@ var app = new Vue({
   data: {
     elements: null,
     card: null,
-    amount: '0.0',
-    description: '',
-    errorMessage: '',
-    successMessage: '',
+
+    client: '',
     email: null,
+    description: '',
+    amount: '0.0',
+
     currencies: CONFIG.stripe.currencies,
     currency: CONFIG.stripe.currencies[0],
+
+    errorMessage: '',
+    successMessage: '',
+
     clientSecret: null,
     showConfirmation: false
   },
@@ -155,10 +161,11 @@ var app = new Vue({
             this.errorMessage = result.error.message;
           } else if(result.paymentIntent && result.paymentIntent.status === 'succeeded') {
             console.info('Se ejecutó correctamente');
+
+            this.showConfirmation = true;
             this.errorMessage = '';
             this.successMessage = '¡Muchas gracias, recibimos tu pago!';
             this.card.clear();
-            this.amount = '0.0';
           }
         });
 

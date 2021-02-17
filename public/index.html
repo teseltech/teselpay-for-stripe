@@ -32,7 +32,7 @@
           <fieldset class="with-state">
             <label for="data-name">
               <span>{{ $t("message.client") }}</span>
-              <input name="name" type="text" id="data-name" v-model="description" @focus="$event.target.select()" class="field" v-bind:placeholder="$t('message.name')" required>
+              <input name="name" type="text" id="data-name" v-model="client" @focus="$event.target.select()" class="field" v-bind:placeholder="$t('message.name')" required>
             </label>
             <label for="data-email">
               <span>{{ $t('message.emailaddress') }}</span>
@@ -40,7 +40,7 @@
             </label>
             <label for="data-concept">
               <span>{{ $t('message.conceptdescription') }}</span>
-              <input name="concept" type="text" id="data-concept" class="field" v-bind:placeholder="$t('message.concept')" required>
+              <input name="concept" type="text" id="data-concept" v-model="description" class="field" v-bind:placeholder="$t('message.concept')" required>
             </label>
         </fieldset>
         </section>
@@ -92,20 +92,23 @@
       <p>Powered by <a href="https://tesel.tech">Tesel</a></p>
     </div>
   </footer>
+  <keep-alive>
+    <confirmation v-if="showConfirmation" :amount="amount" :client="client" :email="email" @close="showConfirmation=false"></confirmation>
+  </keep-alive>
   </div>
 
   <script type="text/x-template" id="confirmation-template">
     <transition name="confirmation">
-        <div class="confirmation-mask" @click="$emit('close')">
+        <div class="confirmation-mask" @click="window.location.reload()">
           <div class="confirmation-wrapper">
             <div class="confirmation-container" @click="$event.stopPropagation()">
               <div class="confirmation-body">
                 <h3>Recibimos tu pago</h3>
-                <p class="confirmation-amount">$500.00</p>
-                <p>Muchas gracias, Nombre. Recibimos tu pago.</p>
+                <p class="confirmation-amount">{{ amount }}</p>
+                <p>Muchas gracias, {{ client }}. Recibimos tu pago.</p>
                 <p class="email-thanks">Ya enviamos tu recibo a:</p>
-                <p class="email">myself@example.com</p>
-                <button class="confirmation-close-button" @click="$emit('close')">Close</button>
+                <p class="email">{{ email }}</p>
+                <button class="confirmation-close-button" @click="window.location.reload()">Close</button>
                 </div>
             </div>
           </div>
