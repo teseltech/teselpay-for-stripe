@@ -27,7 +27,6 @@ All dependencies are obtained through CDN.
 - [Stripe Javscript SDK](https://github.com/stripe/stripe-js)
 - [Vue](https://vuejs.org/) and [Vue router](https://router.vuejs.org/)
 - [Vue Currency Input](https://github.com/dm4t2/vue-currency-input)
-- [axios](https://github.com/axios/axios)
 
 ### Structure
 
@@ -50,7 +49,7 @@ After cloning the project you will need a new Firebase project. The easiest way 
 
 Create a new project, select the organization and make sure to enable billing for it. The flexible costs plan (ongoing) is enough and should not generate additional costs if used in moderation or for testing. Be mindful and estimate your usage.
 
-_ In order to use Firebase Functions it is necessary to install Firebase CLI. You can find more information on how to install it [here](https://firebase.google.com/docs/cli)_
+_In order to use Firebase Functions it is necessary to install Firebase CLI. You can find more information on how to install it [here](https://firebase.google.com/docs/cli)_
 
 After installing Firebase CLI install the remaining dependencies using the following commands:
 
@@ -171,6 +170,8 @@ Execute `firebase emulators:start` to get a log similar to the following example
 This is the endpoint. Note that it is running in `localhost:5001`
 
 During production you can find the endpoint's URL in the Firebase console. In the console go to the  _Functions_ menu and copy the URL of the function you're working on.
+
+Since we are using Typescript remember to execute `npm run build` before executing the emulators next time in order to cross compile the code.
 
 ---
 

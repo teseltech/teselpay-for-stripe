@@ -25,6 +25,8 @@
   <div class="container">
   <form class="app" @submit="createToken" action="/" method="post" v-cloak>
     <div class="row">
+
+      <!-- Left/Top section. Holds the basic payment info -->
       <div id="left" class="col-left">
 
         <section>
@@ -32,7 +34,7 @@
           <fieldset class="with-state">
             <label for="data-name">
               <span>{{ $t("message.client") }}</span>
-              <input name="name" type="text" id="data-name" v-model="description" @focus="$event.target.select()" class="field" v-bind:placeholder="$t('message.name')" required>
+              <input name="name" type="text" id="data-name" v-model="client" @focus="$event.target.select()" class="field" v-bind:placeholder="$t('message.name')" required>
             </label>
             <label for="data-email">
               <span>{{ $t('message.emailaddress') }}</span>
@@ -40,7 +42,7 @@
             </label>
             <label for="data-concept">
               <span>{{ $t('message.conceptdescription') }}</span>
-              <input name="concept" type="text" id="data-concept" class="field" v-bind:placeholder="$t('message.concept')" required>
+              <input name="concept" type="text" id="data-concept" v-model="description" class="field" v-bind:placeholder="$t('message.concept')" required>
             </label>
         </fieldset>
         </section>
@@ -58,6 +60,7 @@
         </section>
       </div>
 
+      <!-- Right/Bottom section. Holds the amount input and the submit button -->
       <div id="right" class="col-right">
         <section>
           <h2>{{ $t('message.amount') }}</h2>
@@ -74,7 +77,9 @@
             </label>
           </fieldset>
         </section>
+
         <button type="submit" @click="createToken" class="payment-button">{{ $t('message.pay') }}</button>
+        <!-- Basic confirmation message -->
         <div class="messages">
           <div class="element-message element-errors" v-bind:class="{ 'd-none': !errorMessage }">
             {{ errorMessage }}
@@ -83,6 +88,7 @@
             {{ successMessage }}
           </div>
         </div>
+
       </div>
     </div>
   </form>
@@ -92,14 +98,35 @@
       <p>Powered by <a href="https://tesel.tech">Tesel</a></p>
     </div>
   </footer>
+  <confirmation v-if="showConfirmation" :amount="amount" :client="client" :email="email" @close="showConfirmation=false"></confirmation>
   </div>
+
+  <!-- Template for the confirmation dialog -->
+  <script type="text/x-template" id="confirmation-template">
+    <transition name="confirmation">
+        <div class="confirmation-mask" @click="window.location.reload()">
+          <div class="confirmation-wrapper">
+            <div class="confirmation-container" @click="$event.stopPropagation()">
+              <div class="confirmation-body">
+                <h3>Recibimos tu pago</h3>
+                <p class="confirmation-amount">{{ amount | currency }}</p>
+                <p>Muchas gracias, {{ client }}. Recibimos tu pago.</p>
+                <p class="email-thanks">Ya enviamos tu recibo a:</p>
+                <p class="email">{{ email }}</p>
+                <button class="confirmation-close-button" @click="window.location.reload()">Close</button>
+                </div>
+            </div>
+          </div>
+        </div>
+    </transition>
+  </script>
 
   <script src="https://js.stripe.com/v3/"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="https://unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
   <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
   <script src="https://unpkg.com/vue-currency-input"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue-currency-filter"></script>
   <script src="/config.js" type="text/javascript"></script>
   <script src="/app.js" type="text/javascript"></script>
 </body>

@@ -1,20 +1,33 @@
+/**
+* Stripe library initialization
+*
+* @property {string} CONFIG.stripe.pk Publishable Stripe Key
+* @property {string} CONFIG.stripe.options Other options for Stripe Elements
+*/
 var stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
 
+/**
+* VueI18n configuration. Config.language comes from the config file
+*/
 const i18n = new VueI18n({
   locale: CONFIG.language,
   messages
 })
 
-
+/**
+* VueRoute configuration. Routes to charge on different currencies.
+*/
 const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/:amountcurrency' },
-    { path: '/:currency/:amount' },
     { path: '/:currency/:amount' }
   ]
 });
 
+/**
+* Routes solving.
+*/
 router.beforeEach((to, from, next) => {
 
   if(to.path == '/'){
@@ -36,6 +49,27 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+/**
+* VueCurrencyFilter configuration. This filter is used to display the confirmation dialog
+*/
+Vue.use(VueCurrencyFilter, {
+    symbol: "$",
+    thousandsSeparator: ",",
+    fractionCount: 0,
+    fractionSeparator: ".",
+    symbolPosition: "front",
+    symbolSpacing: true,
+    avoidEmptyDecimals: '##',
+  });
+
+/**
+* Registration of confirmation dialog component.
+*/
+Vue.component("confirmation", {
+  props: ['amount', 'client', 'email'],
+  template: "#confirmation-template"
+});
+
 var app = new Vue({
   el: '#app',
 
@@ -43,9 +77,46 @@ var app = new Vue({
 
   router: router,
 
-  /* Watch for changes in objects */
+/**
+* Module variables.
+* elements The Stripe Elements object
+* card The Card object instanciated from Stripe Elements
+* client Payee's name
+* email Payee's email
+* description Charge description
+* amount Charge amount
+* currencies Available currencies
+* currency Charge currency
+* errorMessage Error message object
+* successMessage Success message object
+* clientSecret Authentication token for the charge
+* showConfirmation Confirmation screen render condition
+*/
+  data: {
+    elements: null,
+    card: null,
 
+    client: '',
+    email: null,
+    description: '',
+    amount: '0.0',
+
+    currencies: CONFIG.stripe.currencies,
+    currency: CONFIG.stripe.currencies[0],
+
+    errorMessage: '',
+    successMessage: '',
+
+    clientSecret: null,
+    showConfirmation: false
+  },
+
+  /* Watch for changes in objects */
   watch: {
+  /**
+  * Checks for any change to the current route.
+  * It reacts to reflect the new currency or amount
+  */
     $route(to, from){
       if(to.params.currency && to.params.amount) {
         this.currency = to.params.currency.toLowerCase();
@@ -61,34 +132,14 @@ var app = new Vue({
     }
   },
 
-  /* Module variables */
-
-  data: {
-    elements: null,
-    card: null,
-    amount: '0.0',
-    description: '',
-    errorMessage: '',
-    successMessage: '',
-    email: null,
-    currencies: CONFIG.stripe.currencies,
-    currency: CONFIG.stripe.currencies[0]
-  },
-
-  /* Template available Filters */
-
-  filters: {
-    capitalize: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.toUpperCase()
-    }
-  },
-
-  /* Function to run just after the module is mounted */
-
+  /**
+  * Actions to take after module is mounted
+  * First it checks for the current currency and amount
+  * Updates objects and UI accordingly.
+  *
+  * Initializes Stripe Elements and assins the instance to the Card Object
+  */
   mounted: function() {
-
     if(this.$route.params.currency && this.$route.params.amount){
       this.currency = this.$route.params.currency.toLowerCase();
       this.amount = this.$route.params.amount;
@@ -117,76 +168,77 @@ var app = new Vue({
   },
 
   /* Template and module available Methods */
-
   methods: {
-    createToken: function(e) {
+    /**
+    * createToken fetches the server for a paymentIntent. It sends the required
+    * data to create such intent.
+    * Asks Stripe Elements to confirmCardPayment. In case it confirms
+    * will display sucess message
+    */
+    createToken: async function(e) {
+
       e.preventDefault();
+
+      var handlerurl = CONFIG.stripe.endpoint;
+      var data = {
+        amount: this.amount * 100,
+        currency:  this.currency
+      }
+      var options = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      };
+
+      console.info('Will attempt to retrieve paymentIntent');
+
+      this.clientSecret = fetch(handlerurl, options).then(function(response) {
+        return response.json();
+      }).then(function(responseJson) {
+        console.info('Connected to server & retrieved paymentIntent');
+        return responseJson.client_secret;
+      });
+
       if(this.description && this.email && this.amount) {
-        stripe.createToken(this.card)
-        .then((result) => {
+
+        stripe.confirmCardPayment(
+          await this.clientSecret,
+          {
+            payment_method: {card: this.card}
+          }
+        ).then((result) => {
           if(result.error) {
-            console.error(result.error);
+            console.error('Ocurrió un error');
             this.errorMessage = result.error.message;
-          } else {
+          } else if(result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+            console.info('Se ejecutó correctamente');
+
+            this.showConfirmation = true;
             this.errorMessage = '';
-            this.successMessage = '';
-            this.stripeTokenHandler(result.token, this.amount, this.currency, this.description, this.email);
+            this.successMessage = '¡Muchas gracias, recibimos tu pago!';
+            this.card.clear();
           }
         });
+
       } else {
         this.errorMessage = 'Por favor completa todos los campos'
       }
     },
+  },
 
-    stripeTokenHandler: function(token, amount, currency, description, email) {
-
-      var handlerurl = CONFIG.stripe.endpoint;
-      var paymentinfo = {
-        token: token,
-        amount: amount * 100,
-        currency: currency,
-        description: description,
-        email: email
-      };
-
-      console.info('Will attempt to authorize the payment', paymentinfo);
-
-      axios.post(handlerurl, paymentinfo).then(response => {
-        var data = response.data;
-        console.info(data);
-        switch(data.code) {
-          case 'card_declined':
-          this.errorMessage = data.raw.message;
-          break;
-
-          case 'expired_card':
-          this.errorMessage = data.raw.message;
-          break;
-
-          case 'incorrect_cvc':
-          this.errorMessage = data.raw.message;
-          break;
-
-          case 'processing_error':
-          this.errorMessage = data.raw.message;
-          break;
-
-          case 'incorrect_number':
-          this.errorMessage = data.raw.message;
-          break;
-
-          default:
-          if(data.outcome) {
-            if(data.outcome.type == 'authorized') {
-              this.successMessage = '¡Muchas gracias, recibimos tu pago!'
-              this.card.clear();
-              this.amount = '0.0';
-            }
-            } else {
-              this.errorMessage = 'Ocurrió un error desconocido. Por favor contáctanos.'
-            }
-          }
-        });
-      }
+  /* Template available Filters */
+  filters: {
+    /**
+    * capitalize filter.
+    */
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.toUpperCase()
     }
-  });
+  }
+
+});
