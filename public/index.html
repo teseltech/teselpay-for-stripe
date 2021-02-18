@@ -25,6 +25,8 @@
   <div class="container">
   <form class="app" @submit="createToken" action="/" method="post" v-cloak>
     <div class="row">
+
+      <!-- Left/Top section. Holds the basic payment info -->
       <div id="left" class="col-left">
 
         <section>
@@ -58,6 +60,7 @@
         </section>
       </div>
 
+      <!-- Right/Bottom section. Holds the amount input and the submit button -->
       <div id="right" class="col-right">
         <section>
           <h2>{{ $t('message.amount') }}</h2>
@@ -74,7 +77,9 @@
             </label>
           </fieldset>
         </section>
+
         <button type="submit" @click="createToken" class="payment-button">{{ $t('message.pay') }}</button>
+        <!-- Basic confirmation message -->
         <div class="messages">
           <div class="element-message element-errors" v-bind:class="{ 'd-none': !errorMessage }">
             {{ errorMessage }}
@@ -83,6 +88,7 @@
             {{ successMessage }}
           </div>
         </div>
+
       </div>
     </div>
   </form>
@@ -95,6 +101,7 @@
   <confirmation v-if="showConfirmation" :amount="amount" :client="client" :email="email" @close="showConfirmation=false"></confirmation>
   </div>
 
+  <!-- Template for the confirmation dialog -->
   <script type="text/x-template" id="confirmation-template">
     <transition name="confirmation">
         <div class="confirmation-mask" @click="window.location.reload()">
