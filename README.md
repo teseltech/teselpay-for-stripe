@@ -49,7 +49,7 @@ After cloning the project you will need a new Firebase project. The easiest way 
 
 Create a new project, select the organization and make sure to enable billing for it. The flexible costs plan (ongoing) is enough and should not generate additional costs if used in moderation or for testing. Be mindful and estimate your usage.
 
-_ In order to use Firebase Functions it is necessary to install Firebase CLI. You can find more information on how to install it [here](https://firebase.google.com/docs/cli)_
+_In order to use Firebase Functions it is necessary to install Firebase CLI. You can find more information on how to install it [here](https://firebase.google.com/docs/cli)_
 
 After installing Firebase CLI install the remaining dependencies using the following commands:
 
