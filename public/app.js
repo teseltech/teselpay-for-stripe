@@ -6,20 +6,28 @@
 */
 var stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
 
+/**
+* VueI18n configuration. Config.language comes from the config file
+*/
 const i18n = new VueI18n({
   locale: CONFIG.language,
   messages
 })
 
+/**
+* VueRoute configuration. Routes to charge on different currencies.
+*/
 const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/:amountcurrency' },
-    { path: '/:currency/:amount' },
     { path: '/:currency/:amount' }
   ]
 });
 
+/**
+* Routes solving.
+*/
 router.beforeEach((to, from, next) => {
 
   if(to.path == '/'){
@@ -41,6 +49,9 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+/**
+* VueCurrencyFilter configuration. This filter is used to display the confirmation dialog
+*/
 Vue.use(VueCurrencyFilter, {
     symbol: "$",
     thousandsSeparator: ",",
@@ -51,6 +62,9 @@ Vue.use(VueCurrencyFilter, {
     avoidEmptyDecimals: '##',
   });
 
+/**
+* Registration of confirmation dialog component.
+*/
 Vue.component("confirmation", {
   props: ['amount', 'client', 'email'],
   template: "#confirmation-template"
@@ -63,7 +77,21 @@ var app = new Vue({
 
   router: router,
 
-  /* Module variables */
+/**
+* Module variables.
+* elements The Stripe Elements object
+* card The Card object instanciated from Stripe Elements
+* client Payee's name
+* email Payee's email
+* description Charge description
+* amount Charge amount
+* currencies Available currencies
+* currency Charge currency
+* errorMessage Error message object
+* successMessage Success message object
+* clientSecret Authentication token for the charge
+* showConfirmation Confirmation screen render condition
+*/
   data: {
     elements: null,
     card: null,
@@ -85,6 +113,10 @@ var app = new Vue({
 
   /* Watch for changes in objects */
   watch: {
+  /**
+  * Checks for any change to the current route.
+  * It reacts to reflect the new currency or amount
+  */
     $route(to, from){
       if(to.params.currency && to.params.amount) {
         this.currency = to.params.currency.toLowerCase();
@@ -100,7 +132,13 @@ var app = new Vue({
     }
   },
 
-  /* Actions to take after module is mounted */
+  /**
+  * Actions to take after module is mounted
+  * First it checks for the current currency and amount
+  * Updates objects and UI accordingly.
+  *
+  * Initializes Stripe Elements and assins the instance to the Card Object
+  */
   mounted: function() {
     if(this.$route.params.currency && this.$route.params.amount){
       this.currency = this.$route.params.currency.toLowerCase();
@@ -131,6 +169,12 @@ var app = new Vue({
 
   /* Template and module available Methods */
   methods: {
+    /**
+    * createToken fetches the server for a paymentIntent. It sends the required
+    * data to create such intent.
+    * Asks Stripe Elements to confirmCardPayment. In case it confirms
+    * will display sucess message
+    */
     createToken: async function(e) {
 
       e.preventDefault();
@@ -187,6 +231,9 @@ var app = new Vue({
 
   /* Template available Filters */
   filters: {
+    /**
+    * capitalize filter.
+    */
     capitalize: function (value) {
       if (!value) return ''
       value = value.toString()
