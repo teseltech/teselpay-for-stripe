@@ -12,7 +12,7 @@ Throug `vue-router` it supports four different URL paths. Using `MXN` and `USD` 
 - http://localhost:500/1000mxn opens the payments screen with `MXN` as the currency and $1,000 as the amount
 - http://localhost:5000 opens the payments screen with all fields empty
 
-These URL paths are not case sentsitive.
+These URL paths are not case-sensitive.
 
 The project uses Stripe Elements, Vue and Firebase Cloud Functions.
 
@@ -183,4 +183,4 @@ The project is released under MIT license. If you want to make a pull request yo
 
 ## Supporting the project
 
-If you'd like to support the project you can also donate to us at https://pay.tesel.tech where you can also see the project implemented
+If you'd like to support the project you can also donate to us at https://pay.tesel.tech where you can also see the project implemented.

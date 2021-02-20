@@ -108,12 +108,12 @@
           <div class="confirmation-wrapper">
             <div class="confirmation-container" @click="$event.stopPropagation()">
               <div class="confirmation-body">
-                <h3>Recibimos tu pago</h3>
+                <h3>{{ $t('message.confirmation_title') }}</h3>
                 <p class="confirmation-amount">{{ amount | currency }}</p>
-                <p>Muchas gracias, {{ client }}. Recibimos tu pago.</p>
-                <p class="email-thanks">Ya enviamos tu recibo a:</p>
-                <p class="email">{{ email }}</p>
-                <button class="confirmation-close-button" @click="window.location.reload()">Close</button>
+                <p>{{ $t('message.confirmation_thankyou') }}, {{ client }}. {{ $t('message.confirmation_paymentreceived') }}</p>
+                <p class="email-thanks">{{ $t('message.confirmation_receiptsentto') }}</p>
+                <p class="confirmation-email">{{ email }}</p>
+                <button class="confirmation-close-button" @click="window.location.reload()">{{ $t('message.confirmation_close') }}</button>
                 </div>
             </div>
           </div>
