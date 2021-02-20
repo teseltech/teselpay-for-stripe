@@ -30,6 +30,11 @@ const messages =  {
       pay: "Pagar",
       errorcopy: "Ocurrió un error desconocido. Por favor contáctanos.",
       successcopy: "¡Muchas gracias, recibimos tu pago!",
+      confirmation_title: "Pago exitoso",
+      confirmation_thankyou: "Gracias",
+      confirmation_paymentreceived: "Recibimos tu pago.",
+      confirmation_receiptsentto: "Enviamos tu recibo a:",
+      confirmation_close: "Cerrar"
     }
   },
 
@@ -49,6 +54,11 @@ const messages =  {
       pay: "Pay",
       errorcopy: "An unexpected error has occurred. Please contact us.",
       successcopy: "Thank you, we have received your payment!",
+      confirmation_title: "Payment successful",
+      confirmation_thankyou: "Thank you",
+      confirmation_paymentreceived: "Payment received.",
+      confirmation_receiptsentto: "We sent your receipt to:",
+      confirmation_close: "Close"
     }
   },
 
@@ -68,6 +78,11 @@ const messages =  {
       pay: "Pagi",
       errorcopy: "Neatendita eraro okazis. Bonvolu kontakti nin.",
       successcopy: "Dankon, ni ricevis vian pagon!",
+      confirmation_title: "Payment successful",
+      confirmation_thankyou: "Thank you",
+      confirmation_paymentreceived: "Payment received.",
+      confirmation_receiptsentto: "We sent your receipt to:",
+      confirmation_close: "Close"
     }
   }
 }
