@@ -173,6 +173,15 @@ During production you can find the endpoint's URL in the Firebase console. In th
 
 Since we are using Typescript remember to execute `npm run build` before executing the emulators next time in order to cross compile the code.
 
+You should also create a `.runtimeconfig.json` file for the Firebase Functions. Here you can overwrite the system variables for your local tests, including `stripe.secret`. This allows you to use your Stripe test API keys without editing the functions source file.
+
+```bash
+cd functions
+firebase functions:config:get > .runtimeconfig.json
+```
+
+This file will not be tracked by the default `.gitignore` it only for your local tests.
+
 ---
 
 The colors and logos, including the favicon, can be changed manually in either `public/style.css` or `public/index.html`.
