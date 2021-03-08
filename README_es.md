@@ -174,6 +174,15 @@ En tu ambiente de producción puedes encontrar la URL del endpoint en la consola
 
 Debido a que estamos empleando Typescript siempre recuerda ejecutar `npm run build` antes de ejecutar los emuladores la siguiente vez para cross-compilar el código.
 
+También deberías crear un archivo `.runtimeconfig.json` para tus Firebase Functions. En ese archivo vas a poder definir localmente variables de sistema para tus pruebas, incluida la variable `stripe.secret`. Esto te permitirá usar tus llaves de prueba del Stripe API sin editar el código fuente de las funciones
+
+```bash
+cd functions
+firebase functions:config:get > .runtimeconfig.json
+```
+
+Este archivo no esta agregado al repositorio por default. Es solo para hacer pruebas locales.
+
 ---
 
 Los colores y logotipos, incluido el favicon, deberás cambiarlos manualmente ya sea en `public/style.css` o `public/index.html`.
