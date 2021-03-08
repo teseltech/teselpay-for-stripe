@@ -328,8 +328,8 @@ fieldset label.amount input {
 .confirmation-mask {
   background-color: rgba(0, 0, 0, 0.5);
   display: grid;
-  grid-template-columns: auto 300px auto;
-  grid-template-rows: auto 400px auto;
+  grid-template-columns: auto minmax(300px, 500px) auto;
+  grid-template-rows: auto minmax(400px,500px) auto;
   height: 100%;
   left: 0;
   position: fixed;
@@ -348,7 +348,8 @@ fieldset label.amount input {
   box-shadow: 0 2px 8px rgba(0,0,0,0.33);
   height: 100%;
   padding: 20px 30px;
-  width: 100%;
+  /* width: 100%; */
+  margin: 0 20px;
 }
 
 .confirmation-body {
@@ -356,6 +357,7 @@ fieldset label.amount input {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  text-align: center;
 }
 
 .confirmation-body * {
@@ -365,21 +367,30 @@ fieldset label.amount input {
 .confirmation-body .confirmation-amount {
   font-family: 'Ubuntu Mono', monospace;
   color: #3D9970;
-
-  font-size: 3rem;
+  font-size: clamp(1.9rem,8vw,2.9rem);
   text-align: center;
-  border-bottom: solid;
+}
+
+.confirmation-body .confirmation-amount::after {
+  content: "";
+  width: 30%;
+  background: #3D9970;
+  height: 4px;
+  display: block;
+  margin: 10px auto 0 auto;
 }
 
 .confirmation-body .email-thanks {
   text-align: center;
 }
 
-.confirmation-body .email {
+.confirmation-body .confirmation-email {
   text-align: center;
   font-weight: bolder;
-  font-size: 1.2rem;
-  margin-top: -2rem;
+  font-size: 1.1rem;
+  overflow-wrap: break-word;
+  margin-top: -1.8rem;
+  font-size: clamp(1rem,10vw,1.1rem);
 }
 
 .confirmation-body h3 {
