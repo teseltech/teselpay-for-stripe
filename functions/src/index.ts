@@ -21,9 +21,12 @@ const secretHandler = async (request: any, response: any) => {
   * @property {string} currency a three letter currency code, in general ISO compliant.
   * Check Stripe documentation.
   */
+
   const paymentIntent = await stripe.paymentIntents.create({
     amount: request.body.amount,
     currency: request.body.currency,
+    description: request.body.description,
+    receipt_email: request.body.email
   });
   response.json({client_secret: paymentIntent.client_secret});
 }
