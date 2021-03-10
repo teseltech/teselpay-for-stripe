@@ -182,8 +182,10 @@ var app = new Vue({
       var handlerurl = CONFIG.stripe.endpoint;
       var data = {
         amount: this.amount * 100,
-        currency:  this.currency
-      }
+        currency:  this.currency,
+        description: this.description,
+        receipt_email: this.email
+      };
       var options = {
         method: 'POST',
         mode: 'cors',
