@@ -1,12 +1,4 @@
 /**
-* Stripe library initialization
-*
-* @property {string} CONFIG.stripe.pk Publishable Stripe Key
-* @property {string} CONFIG.stripe.options Other options for Stripe Elements
-*/
-var stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
-
-/**
 * VueI18n configuration. Config.language comes from the config file
 */
 const i18n = new VueI18n({
@@ -108,7 +100,8 @@ var app = new Vue({
     successMessage: '',
 
     clientSecret: null,
-    showConfirmation: false
+    showConfirmation: false,
+    stripe : null
   },
 
   /* Watch for changes in objects */
@@ -140,6 +133,8 @@ var app = new Vue({
   * Initializes Stripe Elements and assins the instance to the Card Object
   */
   mounted: function() {
+    this.stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
+
     if(this.$route.params.currency && this.$route.params.amount){
       this.currency = this.$route.params.currency.toLowerCase();
       this.amount = this.$route.params.amount;
@@ -158,7 +153,7 @@ var app = new Vue({
       this.amount = '0.0';
     }
 
-    this.elements = stripe.elements();
+    this.elements = this.stripe.elements();
     var style = {
       base: { fontSize: '16px', color: '#32325d' }
     }
@@ -181,7 +176,7 @@ var app = new Vue({
 
       var handlerurl = CONFIG.stripe.endpoint;
       var data = {
-        amount: this.amount * 100,
+        amount: this.amount,
         name: this.client,
         currency:  this.currency,
         description: this.description,
@@ -207,7 +202,7 @@ var app = new Vue({
 
       if(this.description && this.email && this.amount) {
 
-        stripe.confirmCardPayment(
+        this.stripe.confirmCardPayment(
           await this.clientSecret,
           {
             payment_method: {card: this.card}

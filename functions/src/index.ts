@@ -24,7 +24,7 @@ const secretHandler = async (request: Request, response: Response) => {
   */
 
   const paymentIntent: Stripe.PaymentIntent | Stripe.StripePermissionError = await stripe.paymentIntents.create({
-    amount: request.body.amount,
+    amount: request.body.amount * 100,
     currency: request.body.currency,
     description: request.body.description,
     receipt_email: request.body.email
