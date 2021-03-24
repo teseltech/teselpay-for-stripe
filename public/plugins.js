@@ -32,3 +32,12 @@ router.beforeEach((to, from, next) => {
     next({ path: '/', replace: false })
   }
 });
+
+var CapitalizePlugin = {};
+CapitalizePlugin.install = function (Vue, options) {
+  Vue.filter('capitalize', function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.toUpperCase()
+  })
+}

@@ -19,6 +19,8 @@ Vue.use(VueCurrencyFilter, {
     avoidEmptyDecimals: '##',
   });
 
+Vue.use(CapitalizePlugin);
+
 /**
 * Registration of confirmation dialog component.
 */
@@ -69,27 +71,6 @@ var app = new Vue({
     stripe : null
   },
 
-  /* Watch for changes in objects */
-  watch: {
-  /**
-  * Checks for any change to the current route.
-  * It reacts to reflect the new currency or amount
-  */
-    $route(to, from){
-      if(to.params.currency && to.params.amount) {
-        this.currency = to.params.currency.toLowerCase();
-        this.amount = to.params.amount;
-
-      } else if(to.params.amountcurrency) {
-        var re = /^(\d+)([A-Za-z]{3})$/;
-        var amountcurrency = to.params.amountcurrency.match(re);
-
-        this.currency = amountcurrency[2].toLowerCase();
-        this.amount = amountcurrency[1];
-      }
-    }
-  },
-
   /**
   * Actions to take after module is mounted
   * First it checks for the current currency and amount
@@ -110,8 +91,6 @@ var app = new Vue({
 
       this.currency = amountcurrency[2].toLowerCase();
       this.amount = amountcurrency[1];
-
-      console.log(this.currency, amountcurrency[1], this.amount, amountcurrency[2]);
 
     } else {
       this.currency = this.currencies[0];
@@ -191,17 +170,5 @@ var app = new Vue({
       }
     },
   },
-
-  /* Template available Filters */
-  filters: {
-    /**
-    * capitalize filter.
-    */
-    capitalize: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.toUpperCase()
-    }
-  }
 
 });
