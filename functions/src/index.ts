@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions'; // Required to run firebase functions
 import Stripe from 'stripe'; // Stripe node.js API
-const express = require('express'); // Express framework
+import { Request, Response } from 'express'; // Express framework
+import * as express from 'express';
 const cors = require('cors')({origin: true}); // Library to allow express to use CORS
 
 /**
@@ -13,7 +14,7 @@ const stripe = new Stripe(functions.config().stripe.secret, {
 
 const app = express();
 
-const secretHandler = async (request: any, response: any) => {
+const secretHandler = async (request: Request, response: Response) => {
   /**
   * paymentIntent.create will return a paymentIntent. The frontend requires the
   * client secret returned from the sucessful authentication.
@@ -22,8 +23,8 @@ const secretHandler = async (request: any, response: any) => {
   * Check Stripe documentation.
   */
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: request.body.amount,
+  const paymentIntent: Stripe.PaymentIntent | Stripe.StripePermissionError = await stripe.paymentIntents.create({
+    amount: request.body.amount * 100,
     currency: request.body.currency,
     description: request.body.description,
     receipt_email: request.body.email
