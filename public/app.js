@@ -1,53 +1,10 @@
 /**
-* Stripe library initialization
-*
-* @property {string} CONFIG.stripe.pk Publishable Stripe Key
-* @property {string} CONFIG.stripe.options Other options for Stripe Elements
-*/
-var stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
-
-/**
 * VueI18n configuration. Config.language comes from the config file
 */
 const i18n = new VueI18n({
   locale: CONFIG.language,
   messages
 })
-
-/**
-* VueRoute configuration. Routes to charge on different currencies.
-*/
-const router = new VueRouter({
-  mode: 'history',
-  routes: [
-    { path: '/:amountcurrency' },
-    { path: '/:currency/:amount' }
-  ]
-});
-
-/**
-* Routes solving.
-*/
-router.beforeEach((to, from, next) => {
-
-  if(to.path == '/'){
-    next()
-  } else if (to.params.amountcurrency){
-    var re = /^(\d+)([A-Za-z]{3})$/;
-    var amountcurrency = to.params.amountcurrency.match(re);
-
-    if(amountcurrency && CONFIG.stripe.currencies.includes(amountcurrency[2].toLowerCase()) && !isNaN(parseFloat(amountcurrency[1]))) {
-      next()
-    } else {
-      next({ path: '/', replace: false })
-    }
-
-  } else if(CONFIG.stripe.currencies.includes(to.params.currency.toLowerCase()) && !isNaN(parseFloat(to.params.amount))) {
-    next()
-  } else {
-    next({ path: '/', replace: false })
-  }
-});
 
 /**
 * VueCurrencyFilter configuration. This filter is used to display the confirmation dialog
@@ -61,6 +18,8 @@ Vue.use(VueCurrencyFilter, {
     symbolSpacing: true,
     avoidEmptyDecimals: '##',
   });
+
+Vue.use(CapitalizePlugin);
 
 /**
 * Registration of confirmation dialog component.
@@ -108,28 +67,8 @@ var app = new Vue({
     successMessage: '',
 
     clientSecret: null,
-    showConfirmation: false
-  },
-
-  /* Watch for changes in objects */
-  watch: {
-  /**
-  * Checks for any change to the current route.
-  * It reacts to reflect the new currency or amount
-  */
-    $route(to, from){
-      if(to.params.currency && to.params.amount) {
-        this.currency = to.params.currency.toLowerCase();
-        this.amount = to.params.amount;
-
-      } else if(to.params.amountcurrency) {
-        var re = /^(\d+)([A-Za-z]{3})$/;
-        var amountcurrency = to.params.amountcurrency.match(re);
-
-        this.currency = amountcurrency[2].toLowerCase();
-        this.amount = amountcurrency[1];
-      }
-    }
+    showConfirmation: false,
+    stripe : null
   },
 
   /**
@@ -140,6 +79,8 @@ var app = new Vue({
   * Initializes Stripe Elements and assins the instance to the Card Object
   */
   mounted: function() {
+    this.stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
+
     if(this.$route.params.currency && this.$route.params.amount){
       this.currency = this.$route.params.currency.toLowerCase();
       this.amount = this.$route.params.amount;
@@ -151,14 +92,12 @@ var app = new Vue({
       this.currency = amountcurrency[2].toLowerCase();
       this.amount = amountcurrency[1];
 
-      console.log(this.currency, amountcurrency[1], this.amount, amountcurrency[2]);
-
     } else {
       this.currency = this.currencies[0];
       this.amount = '0.0';
     }
 
-    this.elements = stripe.elements();
+    this.elements = this.stripe.elements();
     var style = {
       base: { fontSize: '16px', color: '#32325d' }
     }
@@ -181,7 +120,8 @@ var app = new Vue({
 
       var handlerurl = CONFIG.stripe.endpoint;
       var data = {
-        amount: this.amount * 100,
+        amount: this.amount,
+        name: this.client,
         currency:  this.currency,
         description: this.description,
         receipt_email: this.email
@@ -206,7 +146,7 @@ var app = new Vue({
 
       if(this.description && this.email && this.amount) {
 
-        stripe.confirmCardPayment(
+        this.stripe.confirmCardPayment(
           await this.clientSecret,
           {
             payment_method: {card: this.card}
@@ -230,17 +170,5 @@ var app = new Vue({
       }
     },
   },
-
-  /* Template available Filters */
-  filters: {
-    /**
-    * capitalize filter.
-    */
-    capitalize: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.toUpperCase()
-    }
-  }
 
 });
