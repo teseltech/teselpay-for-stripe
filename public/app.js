@@ -36,21 +36,21 @@ var app = new Vue({
 
   router: router,
 
-/**
-* Module variables.
-* elements The Stripe Elements object
-* card The Card object instanciated from Stripe Elements
-* client Payee's name
-* email Payee's email
-* description Charge description
-* amount Charge amount
-* currencies Available currencies
-* currency Charge currency
-* errorMessage Error message object
-* successMessage Success message object
-* clientSecret Authentication token for the charge
-* showConfirmation Confirmation screen render condition
-*/
+  /**
+  * Module variables.
+  * elements The Stripe Elements object
+  * card The Card object instanciated from Stripe Elements
+  * client Payee's name
+  * email Payee's email
+  * description Charge description
+  * amount Charge amount
+  * currencies Available currencies
+  * currency Charge currency
+  * errorMessage Error message object
+  * successMessage Success message object
+  * clientSecret Authentication token for the charge
+  * showConfirmation Confirmation screen render condition
+  */
   data: {
     elements: null,
     card: null,
@@ -79,7 +79,6 @@ var app = new Vue({
   * Initializes Stripe Elements and assins the instance to the Card Object
   */
   mounted: function() {
-    this.stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
 
     if(this.$route.params.currency && this.$route.params.amount){
       this.currency = this.$route.params.currency.toLowerCase();
@@ -96,6 +95,8 @@ var app = new Vue({
       this.currency = this.currencies[0];
       this.amount = '0.0';
     }
+
+    this.stripe = Stripe(CONFIG.stripe.pk, CONFIG.stripe.options);
 
     this.elements = this.stripe.elements();
     var style = {
