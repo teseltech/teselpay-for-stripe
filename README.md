@@ -192,4 +192,4 @@ The project is released under MIT license. If you want to make a pull request yo
 
 ## Supporting the project
 
-If you'd like to support the project you can also donate to us at https://pay.tesel.tech where you can also see the project implemented.
+If you'd like to support the project you can also donate to us at https://pay.tesel.tech/u/tesel where you can also see the project implemented.
